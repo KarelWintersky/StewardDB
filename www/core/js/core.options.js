@@ -18,8 +18,20 @@ function preloadOptionsList(url) // Загружает данные (кэшир�
     return ret;
 }
 
-// формирует SELECTOR/OPTIONS list с текущим элементом равным [currentid]
-// target - ИМЯ селектора
+/* формирует SELECTOR/OPTIONS list с текущим элементом равным [currentid]
+data format:
+{
+    state: ok, error: 0,
+    data:   {
+            n:  {
+                    type:   group       | option
+                    value:  (useless)   | item id in reference
+                    text:   group title | option text
+                    comment:        comment
+                }
+            }
+}
+ */
 function BuildSelectorExtended(target, data, currentid) // currentid is 0 for ANY
 {
     var not_a_first_option_group = 0;
@@ -57,7 +69,20 @@ function BuildSelectorExtended(target, data, currentid) // currentid is 0 for AN
     }
 }
 
-function strpos (haystack, needle, offset) {
-    var i = (haystack+'').indexOf(needle, (offset || 0));
-    return i === -1 ? false : i;
+// формирует SELECTOR/OPTIONS list с текущим элементом равным [currentid]
+// target - ИМЯ селектора
+// СТАРАЯ версия (для абстрактного справочника)
+function BuildSelector(target, data, currentid) // currentid is 1 for NEW
+{
+    if (data['error'] == 0) {
+        var _target = "select[name='"+target+"']";
+        $.each(data['data'], function(id, value){
+            $(_target).append('<option value="'+id+'">'+value+'</option>');
+        });
+        var currentid = (typeof currentid != 'undefined') ? currentid : 1;
+        $("select[name="+target+"] option[value="+ currentid +"]").prop("selected",true);
+        // $("select[name="+target+"]").prop('disabled',false);
+    } else {
+        $("select[name="+target+"]").prop('disabled',true);
+    }
 }

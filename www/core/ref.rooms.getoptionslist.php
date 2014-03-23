@@ -3,6 +3,21 @@ require_once('core.php');
 require_once('core.db.php');
 
 // отдает JSON объект для построения selector/options list на основе абстрактного справочника
+/* формирует SELECTOR/OPTIONS list с текущим элементом равным [currentid]
+data format:
+{
+    state: ok, error: 0,
+    data:   {
+            n:  {
+                    type:   group       | option
+                    value:  (useless)   | item id in reference
+                    text:   group title | option text
+                    comment:        comment
+                }
+            }
+}
+ */
+
 $ref = $_GET['ref'];
 
 $link = ConnectDB();
