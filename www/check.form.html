@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StewardDB: Check objects in database</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="styles/check.form.css">
+    <script type="text/javascript" src="core/jq/jquery-1.10.2.min.js"></script>
+    <script src="core/js/core.options.js"></script>
+    <script type="text/javascript">
+        var rooms_selector = preloadOptionsList('core/ref.rooms.getoptionslist.php');
+        var quality_selector = preloadOptionsList('core/ref.abstract.getoptionslist.php?ref=ref_quality',1);
+        $(document).ready(function(){
+            $.ajaxSetup({cache: false});
+            BuildSelectorExtended('a_inv_rooms', rooms_selector);
+            BuildSelectorExtended('a_inv_quality', quality_selector);
+            // onload
+            $("#inv_code").focus();
+
+            $("#db_check_form").on('submit', function(event){
+                var url = $(this).attr('action');
+                var check_inv_code = $("#inv_code").val();
+                if (check_inv_code == '' ) {
+                    return false;
+                }
+
+                var getting = $.get(url, { inv_code: check_inv_code });
+                var current_task_legend = '';
+                var current_task_action = '';
+                var prediction_button_is_visible;
+                getting.done(function(data){
+                    var result = $.parseJSON(data);
+                    if (result['state'] == 'error') { /* error */
+                    } else {
+                        $form = $("#form_current_task");
+                        $form.trigger('reset');
+
+                        if (result['state'] == 'found') {
+                            // edit
+                            $form.find("input[name='a_inv_code']").val(result['data']['inv_code']);
+                            $form.find("input[name='a_inv_dbtitle']").val(result['data']['inv_title']);
+                            $form.find("input[name='a_inv_date_income']").val(result['data']['inv_date_income']);
+                            $form.find("input[name='a_inv_comment']").val(result['data']['inv_comment']);
+                            // select a_inv_rooms
+                            $form.find("input[name='a_inv_rooms'] option[value='" + parseInt(result['data']['inv_room']) + "']").prop("selected", true);
+                            // select a_inv_quality
+                            $form.find("input[name='a_inv_quality'] option[value='" + parseInt(result['data']['inv_quality']) + "']").prop("selected", true);
+                            // messages and actors
+                            current_task_action = '';
+                            current_task_legend = 'Обновление объекта в базе';
+                            prediction_button_is_visible = 0;
+                        }
+
+                        if (result['state'] == 'notfound') {
+                            // add
+                            $form.find("input[name='a_inv_code']").val(result['data']['inv_code']);
+                            // messages and actors
+                            current_task_action = '';
+                            current_task_legend = 'Добавление объекта в базу';
+                            prediction_button_is_visible = 1;
+                        }
+                        $("#fieldset_form_current_task").html(current_task_legend);
+                        $form.attr('action', current_task_action);
+                        //@todo: optimize
+                        (prediction_button_is_visible == 1 ? $("#actor-title-prediction").show() : $("#actor-title-prediction").hide());
+                        $("#fieldset_form").show();
+                        $form.find("input[name='a_inv_mytitle']").focus();
+                    }
+
+                    // event.preventDefault();
+                });
+                return false;
+            }); // db_check_form
+            $("#add_inv_title_prediction").on('click', function(){
+                $("#form_current_task").trigger('reset');
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+<fieldset>
+    <legend>Проверка объекта учета в БД</legend>
+    <form action="ajax/db.item.check.php" id="db_check_form" method="GET">
+        <button type="text" title="Press F1 for new!" id="actor-new-check">F1</button>
+        <input type="text" name="inv_code" id="inv_code">
+        <button type="submit">Проверить</button>
+    </form>
+    <span class="small hint">Нажмите <strong>F2</strong> для новой провеки инвентарного кода.</span>
+</fieldset>
+<h3 class="check_result_message"></h3>
+
+<fieldset id="fieldset_form" class="hidden">
+    <legend id="fieldset_form_current_task">Добавление объекта в базу</legend>
+    <form method="post" id="form_current_task">
+        <dl>
+            <dt>Инвентарный номер:</dt>
+            <dd><input type="text" name="a_inv_code" size="30"></dd>
+            <dt>Название по описи:</dt>
+            <dd>
+                <input type="text" name="a_inv_mytitle" size="60">
+                <button id="actor-title-prediction" type="button">Предсказать!</button>
+            </dd>
+            <dt>Название по базе:</dt>
+            <dd><input type="text" name="a_inv_dbtitle" size="60"></dd>
+            <dt>Кабинет:</dt>
+            <dd>
+                <select name="a_inv_rooms" id="rooms">
+                    <option value="0" data-group="*">выбрать!</option>
+                </select>
+            </dd>
+            <dt>Состояние:</dt>
+            <dd>
+                <select name="a_inv_quality" id="quality">
+                    <option value="0" data-group="*">выбрать!</option>
+                </select>
+            </dd>
+            <dt>Дата учета:</dt>
+            <dd><input type="text" name="a_inv_date_income" size="60"></dd>
+            <dt>Комментарий:</dt>
+            <dd><input type="text" name="a_inv_comment" size="60"></dd>
+        </dl>
+        <button type="submit">Сохранить</button>
+
+    </form>
+</fieldset>
+<small>
+    [ © KarelWintersky ]
+    [ <a href="/core/">Control panel</a> ]
+</small>
+
+</body>
+</html>

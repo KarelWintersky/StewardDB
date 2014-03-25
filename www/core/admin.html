@@ -1,0 +1,97 @@
+<html>
+<head>
+    <title>Админ-панель</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="jq/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".actor-button").on('click',function(){
+                window.location.href = $(this).attr('data-href');
+            });
+            $(".actor-button-sub").on('click',function(){
+                $('#'+$(this).attr('data-submenu-id') ).toggle(400);
+            });
+        });
+    </script>
+    <style>
+        table {
+            border: 1px dotted blue;
+        }
+        ul {
+            margin-left: 0;
+            margin-bottom: 0; margin-top: 0;
+            padding: 0;
+        }
+        ul li {
+            list-style-type: none;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        div {
+            margin:0;
+        }
+        /* */
+        #footer {
+            color: gray;
+            background-color: #d3d3d3;
+        }
+
+        ol li {
+            margin-bottom: 0.5em;
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* submenu microengine */
+        .have-top-border {
+            border-top: 3px navy solid;
+            padding-top: 10px;
+            margin-top: 10px;
+            width: 150px;
+        }
+        .admin-button-large {
+            height: 60px;
+            width: 150px;
+        }
+        .admin-button-small {
+            width: 150px;
+        }
+        .actor-button-sub {
+            width: 150px;
+        }
+        .submenu-fieldset {
+            width: 150px;
+        }
+    </style>
+</head>
+
+<body>
+<table width="100%">
+    <tr>
+        <td width="180">
+            <!-- типа меню -->
+            <ul>
+                <li>
+                    Справочники
+                </li>
+                <li>
+                    <button data-href="ref.rooms.php" class="admin-button-large actor-button">Помещения</button>
+                </li>
+                <li>
+                    <button data-href="ref.abstract.php?ref=ref_quality" class="admin-button-large actor-button">Категории качества</button>
+                </li>
+                <li>
+                    <button data-href="admin.logout.php" class="admin-button actor-button">Logout</button>
+                </li>
+            </ul>
+        </td>
+        <td valign="top">
+        </td>
+    </tr>
+</table>
+<div><a href="/">Main site</a></div>
+<div id="footer">© Karel Wintersky, 2014.</div>
+
+</body>
+</html>
