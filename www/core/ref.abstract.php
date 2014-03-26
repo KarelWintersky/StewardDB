@@ -27,12 +27,30 @@ if (isset($_GET['ref'])) {
     $link = ConnectDB();
 
     switch ($action) {
+        case 'get-comments': // get comments
+        {
+            $result = array();
+            $q = "SELECT column_name, column_comment FROM information_schema.COLUMNS
+WHERE TABLE_NAME = '{$reference}'";
+            $r = mysql_query($q);
+            $rn = @mysql_num_rows($r);
+            if ($rn > 0) {
+                while ($row = mysql_fetch_assoc($r)) {
+                    $result['data'][ $row['column_name'] ] = $row['column_comment'];
+                }
+                $result['state'] = 'ok';
+            } else {
+                $result['state'] = 'error';
+            }
+            $return = json_encode($result);
+            break;
+        } // case 'get-comments'
         case 'insert':
         {
             $q = array(
                 'data_int' => mysql_escape_string($_GET['data_int']),
                 'data_str' => mysql_escape_string($_GET['data_str']),
-                'data_comment' => mysql_escape_string($_GET['data_comment']),
+                'comment' => mysql_escape_string($_GET['data_comment']),
             );
             $qstr = MakeInsert($q, $reference);
             $res = mysql_query($qstr, $link) or Die("Unable to insert data to DB!".$qstr);
@@ -49,7 +67,7 @@ if (isset($_GET['ref'])) {
             $q = array(
                 'data_int' => mysql_escape_string($_GET['data_int']),
                 'data_str' => mysql_escape_string($_GET['data_str']),
-                'data_comment' => mysql_escape_string($_GET['data_comment']),
+                'comment' => mysql_escape_string($_GET['data_comment']),
             );
 
             $qstr = MakeUpdate($q, $reference, "WHERE id=$id");
@@ -119,7 +137,7 @@ TABLE_START;
     <td>{$ref_record['id']}</td>
     <td>{$ref_record['data_int']}&nbsp;</td>
     <td>{$ref_record['data_str']}&nbsp;</td>
-    <td>{$ref_record['data_comment']}&nbsp;</td>
+    <td>{$ref_record['comment']}&nbsp;</td>
     <td class="centred_cell"><button class="actor-edit button-edit" name="{$ref_record['id']}">Edit</button></td>
 </tr>
 TABLE_EACHROW;
@@ -139,8 +157,8 @@ TABLE_IS_EMPTY;
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <script src="jq/jquery-1.10.2.min.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.3.custom.min.css">
+    <script src="jq/jquery-ui-1.10.3.custom.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jq/jquery-ui-1.10.3.custom.min.css">
 
     <style type="text/css">
         body {
@@ -182,6 +200,19 @@ TABLE_IS_EMPTY;
         var ref_name = '<?php echo $reference ?>';
         var button_id = 0;
 
+        function Abstract_LoadFieldComments(reference)
+        {
+            var ret = {};
+            $.get('?action=get-comments&ref='+reference).done(function(data){
+                var result = $.parseJSON(data);
+                if (result['state'] != 'error') {
+                    ret = result['data'];
+                }
+            });
+
+            return ret;
+        }
+
         function ShowErrorMessage(message)
         {
             alert(message);
@@ -198,7 +229,6 @@ TABLE_IS_EMPTY;
                 ref: ref_name
             } );
             getting.done(function(data){
-
                 result = $.parseJSON(data);
                 if (result['error']==0) {
                     $("#ref_list").empty().load("?action=list&ref="+ref_name);
@@ -266,9 +296,24 @@ TABLE_IS_EMPTY;
                 }
             });
         }
+        function Abstract_SetFieldLabels(data)
+        {
+            if (typeof data !== 'undefined') {
+                if ( data['data_int'] != '') {
+                    $("#add_ref_data_int_label").html( data['data_int'] );
+                    $("#edit_ref_data_int_label").html( data['data_int'] );
+                }
+                if ( data['data_str'] != '') {
+                    $("#add_ref_data_str_label").html( data['data_str'] );
+                    $("#edit_ref_data_str_label").html( data['data_str'] );
+                }
+            }
+        }
 
         $(document).ready(function () {
             $.ajaxSetup({cache: false, async: false });
+            // var ref_field_comments = Abstract_LoadFieldComments();
+            Abstract_SetFieldLabels( Abstract_LoadFieldComments(ref_name) );
 
             $("#ref_list").load("?action=list&ref="+ref_name);
 
@@ -365,11 +410,11 @@ TABLE_IS_EMPTY;
 <div id="add_form" title="Добавить запись в справочник [<?php echo $reference ?>]">
     <form action="?action=insert">
         <fieldset>
-            <label for="add_data_int">Числовое поле: </label>
-            <input type="text" name="add_data_int" id="add_data_int" class="text ui-widget-content ui-corner-all">
-
-            <label for="add_data_str">Строковое поле:</label>
+            <label for="add_data_str" id="add_ref_data_str_label">Строковое поле:</label>
             <input type="text" name="add_data_str" id="add_data_str" class="text ui-widget-content ui-corner-all">
+
+            <label for="add_data_int" id="add_ref_data_int_label">Числовое поле: </label>
+            <input type="text" name="add_data_int" id="add_data_int" class="text ui-widget-content ui-corner-all">
 
             <label for="add_data_comment">Комментарий:</label>
             <input type="text" name="add_data_comment" id="add_data_comment" class="text ui-widget-content ui-corner-all">
@@ -379,11 +424,11 @@ TABLE_IS_EMPTY;
 <div id="edit_form" title="Изменить запись в справочнике [<?php echo $reference ?>]">
     <form action="?action=update">
         <fieldset>
-            <label for="edit_data_int">Числовое поле: </label>
-            <input type="text" name="edit_data_int" id="edit_data_int" class="text ui-widget-content ui-corner-all">
-
-            <label for="edit_data_str">Строковое поле:</label>
+            <label for="edit_data_str" id="edit_ref_data_str_label">Строковое поле:</label>
             <input type="text" name="edit_data_str" id="edit_data_str" class="text ui-widget-content ui-corner-all">
+
+            <label for="edit_data_int" id="edit_ref_data_int_label">Числовое поле: </label>
+            <input type="text" name="edit_data_int" id="edit_data_int" class="text ui-widget-content ui-corner-all">
 
             <label for="edit_data_comment">Комментарий:</label>
             <input type="text" name="edit_data_comment" id="edit_data_comment" class="text ui-widget-content ui-corner-all">

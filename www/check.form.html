@@ -8,18 +8,27 @@
     <script src="core/js/core.options.js"></script>
     <script type="text/javascript">
         var rooms_selector = preloadOptionsList('core/ref.rooms.getoptionslist.php');
-        var quality_selector = preloadOptionsList('core/ref.abstract.getoptionslist.php?ref=ref_quality',1);
+        var quality_selector = preloadOptionsList('core/ref.abstract.getoptionslist.php?ref=ref_quality');
+        // var field_comments =
         $(document).ready(function(){
             $.ajaxSetup({cache: false});
             BuildSelectorExtended('a_inv_rooms', rooms_selector);
-            BuildSelectorExtended('a_inv_quality', quality_selector);
+
+            BuildSelector('a_inv_quality', quality_selector, 1);
             // onload
             $("#inv_code").focus();
 
+            $("#check_this_code").on('click', function(){
+                //@todo: remove error message
+                $("#error_message").fadeOut(600);
+            });
+
             $("#db_check_form").on('submit', function(event){
                 var url = $(this).attr('action');
-                var check_inv_code = $("#inv_code").val();
+                var check_inv_code = $("#check_this_code").val();
                 if (check_inv_code == '' ) {
+                    //@todo show error message!!!!
+                    $("#error_message").text("Необходимо указать инвентарный номер!!! ").fadeIn(600);
                     return false;
                 }
 
@@ -43,7 +52,10 @@
                             // select a_inv_rooms
                             $form.find("input[name='a_inv_rooms'] option[value='" + parseInt(result['data']['inv_room']) + "']").prop("selected", true);
                             // select a_inv_quality
-                            $form.find("input[name='a_inv_quality'] option[value='" + parseInt(result['data']['inv_quality']) + "']").prop("selected", true);
+                            // $form.find("input[name='a_inv_quality'] option[value='" + parseInt(result['data']['inv_quality']) + "']").prop("selected", true);
+
+                            Selector_SetOption('a_inv_quality', parseInt(result['data']['inv_quality']));
+
                             // messages and actors
                             current_task_action = '';
                             current_task_legend = 'Обновление объекта в базе';
@@ -53,6 +65,7 @@
                         if (result['state'] == 'notfound') {
                             // add
                             $form.find("input[name='a_inv_code']").val(result['data']['inv_code']);
+                            Selector_SetOption('a_inv_quality', 1);
                             // messages and actors
                             current_task_action = '';
                             current_task_legend = 'Добавление объекта в базу';
@@ -83,12 +96,13 @@
     <legend>Проверка объекта учета в БД</legend>
     <form action="ajax/db.item.check.php" id="db_check_form" method="GET">
         <button type="text" title="Press F1 for new!" id="actor-new-check">F1</button>
-        <input type="text" name="inv_code" id="inv_code">
+        <input type="text" name="check_this_code" id="check_this_code">
         <button type="submit">Проверить</button>
+        <h3 id="error_message"></h3>
     </form>
     <span class="small hint">Нажмите <strong>F2</strong> для новой провеки инвентарного кода.</span>
 </fieldset>
-<h3 class="check_result_message"></h3>
+<h3 id="check_result_message">&nbsp;</h3>
 
 <fieldset id="fieldset_form" class="hidden">
     <legend id="fieldset_form_current_task">Добавление объекта в базу</legend>
