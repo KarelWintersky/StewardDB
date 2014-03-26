@@ -1,0 +1,58 @@
+XXX {
+    padding: 0; margin: 0;
+}
+/* Форма проверки */
+#db_check_form input, button {
+    font-size: 150%;
+}
+#db_check_form button {
+    font-size: 155%;
+}
+/* "Сетка" инпутов в форме обновления */
+dl {
+    padding: 0; margin: 0;
+    padding-top: 10px;
+}
+dt {
+    float: left;
+    width: 200px;
+    text-align: right;
+    padding-right: 5px;
+    min-height: 1px;
+    font-size: 120%;
+}
+dd {
+    position: relative;
+    top: -5px;
+    margin-bottom: 5px;
+}
+
+/* Форма обновления */
+#fieldset_form input, button, select {
+    font-size: 120%;
+}
+legend {
+    color: blue;
+    font-size: 120%;
+}
+
+span.small {
+    font-size: small;
+}
+span.hint {
+    font-style: italic;
+}
+
+.hidden {
+    display: none;
+}
+
+#check_result_message {
+    display: none;
+    color: red;
+    font-size: 120%;
+}
+#error_message {
+    display: inline;
+    color: red;
+}
