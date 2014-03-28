@@ -5,11 +5,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="styles/check.form.css">
     <script type="text/javascript" src="core/jq/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="core/jq/jquery.hotkeys.js"></script>
+    <script src="core/js/core.js"></script>
     <script src="core/js/core.options.js"></script>
     <script type="text/javascript">
         var rooms_selector = preloadOptionsList('core/ref.rooms.getoptionslist.php');
         var quality_selector = preloadOptionsList('core/ref.abstract.getoptionslist.php?ref=ref_quality');
-        // var field_comments =
+        var task_mode = 'onload';
+
+        function ResetTask()
+        {
+            task_mode = '';
+            $("#fieldset_form").trigger('reset').hide();
+            $("#check_this_code").prop('value','').focus();
+        }
+
         $(document).ready(function(){
             $.ajaxSetup({cache: false});
             BuildSelectorExtended('a_inv_rooms', rooms_selector);
@@ -17,18 +27,17 @@
             BuildSelector('a_inv_quality', quality_selector, 1);
             // onload
             $("#inv_code").focus();
-
+            // bind check button
             $("#check_this_code").on('click', function(){
-                //@todo: remove error message
                 $("#error_message").fadeOut(600);
             });
 
             $("#db_check_form").on('submit', function(event){
                 var url = $(this).attr('action');
-                var check_inv_code = $("#check_this_code").val();
+                var check_inv_code = $("#check_this_code").val().trim();
                 if (check_inv_code == '' ) {
-                    //@todo show error message!!!!
                     $("#error_message").text("Необходимо указать инвентарный номер!!! ").fadeIn(600);
+                    $("#check_this_code").prop('value','').focus();
                     return false;
                 }
 
@@ -45,6 +54,7 @@
 
                         if (result['state'] == 'found') {
                             // edit
+                            $form.find("input[name='a_inv_id']").val( result['data']['inv_id'] );
                             $form.find("input[name='a_inv_code']").val(result['data']['inv_code']);
                             $form.find("input[name='a_inv_dbtitle']").val(result['data']['inv_title']);
                             $form.find("input[name='a_inv_date_income']").val(result['data']['inv_date_income']);
@@ -60,42 +70,53 @@
                             current_task_action = '';
                             current_task_legend = 'Обновление объекта в базе';
                             prediction_button_is_visible = 0;
+                            task_mode = 'edit';
                         }
 
                         if (result['state'] == 'notfound') {
                             // add
                             $form.find("input[name='a_inv_code']").val(result['data']['inv_code']);
+                            $form.find("input[name='a_inv_id']").val( 0 );
                             Selector_SetOption('a_inv_quality', 1);
                             // messages and actors
                             current_task_action = '';
                             current_task_legend = 'Добавление объекта в базу';
                             prediction_button_is_visible = 1;
+                            task_mode = 'add';
                         }
                         $("#fieldset_form_current_task").html(current_task_legend);
                         $form.attr('action', current_task_action);
-                        //@todo: optimize
                         (prediction_button_is_visible == 1 ? $("#actor-title-prediction").show() : $("#actor-title-prediction").hide());
                         $("#fieldset_form").show();
                         $form.find("input[name='a_inv_mytitle']").focus();
-                    }
-
-                    // event.preventDefault();
+                    } // event.preventDefault();
                 });
                 return false;
             }); // db_check_form
-            $("#add_inv_title_prediction").on('click', function(){
-                $("#form_current_task").trigger('reset');
+            $("#actor-title-prediction").on('click', function(){
+                /* $("#form_current_task").trigger('reset'); */
+                alert( $("#form_current_task").find("input[name='a_inv_id']").val() );
             });
+            // Keyboard bindings
+            $("*").on('keypress', null, 'f2', function(){ResetTask()});
+            $("#actor-new-check").on('click', function(){ResetTask()});
 
-
+            // submit update/edit form
+            //@todo: last
+            $("#form_current_task").on('submit', function(){
+                // test 'task_mode' for action (хотя реально эта переменная не нужна, мы базируемся на экшене,
+                // он же нам и возвращает результаты вставки/обновления
+            });
         });
+
+
     </script>
 </head>
 <body>
 <fieldset>
     <legend>Проверка объекта учета в БД</legend>
     <form action="ajax/db.item.check.php" id="db_check_form" method="GET">
-        <button type="text" title="Press F1 for new!" id="actor-new-check">F1</button>
+        <button type="button" title="Press F2 for new!" id="actor-new-check">F2</button>
         <input type="text" name="check_this_code" id="check_this_code">
         <button type="submit">Проверить</button>
         <h3 id="error_message"></h3>
@@ -107,6 +128,7 @@
 <fieldset id="fieldset_form" class="hidden">
     <legend id="fieldset_form_current_task">Добавление объекта в базу</legend>
     <form method="post" id="form_current_task">
+        <input type="hidden" name="a_inv_id">
         <dl>
             <dt>Инвентарный номер:</dt>
             <dd><input type="text" name="a_inv_code" size="30"></dd>
