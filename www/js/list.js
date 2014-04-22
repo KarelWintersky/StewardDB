@@ -99,6 +99,12 @@ $(document).ready(function(){
         });
     });
 
+    $("#actor-excel-export").on('click', function(){
+        tableToExcel('exportable', 'export');
+    });
+
+
+    // here last commit
     $(document).on('click', '.action-show-extended-info-for-id', function(){
         var id = $(this).attr('data-id');
         $.colorbox({

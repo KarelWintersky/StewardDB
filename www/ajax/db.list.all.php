@@ -59,7 +59,7 @@ CloseDB($link);
     if ($nr > 0) {
         ?>
 
-        <table border="1" class="table_items_list">
+        <table border="1" class="table_items_list" id="exportable">
             <tr>
                 <th>
                     (id)
