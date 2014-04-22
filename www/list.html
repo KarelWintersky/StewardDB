@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<head>
+    <title>StewardDB: объекты в таблице</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/list.css">
+    <link rel="stylesheet" href="core/jq/jquery.jgrowl.css">
+    <link rel="stylesheet" href="core/jq/colorbox.css">
+    <script type="text/javascript" src="core/jq/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="core/jq/jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="core/jq/jquery.jgrowl.js"></script>
+    <script type="text/javascript" src="core/jq/jquery.colorbox-min.js"></script>
+    <script src="core/js/core.js"></script>
+    <script src="core/js/core.options.js"></script>
+    <script src="js/list.js"></script>
+</head>
+<body>
+
+<header id="panel-header">
+    <div id="panel-header-inner">
+        <div id="panel-header-copyright"><a href="/" title="В начало">StewardDB v 0.5</a>
+            <sub> by Karel Wintersky</sub>
+            |
+            <h4 class="header-title">Отчет о средствах</h4>
+        </div>
+    </div>
+</header>
+
+<div id="main-wrapper">
+    <fieldset id="panel-search-selectors">
+        <legend>Критерии поиска: </legend>
+        <ul>
+            <li class="pss-have-border">
+                <div>
+                    <span>Помещение:</span>
+                    <select name="select_rooms" class="search-selector"></select>
+                </div>
+            </li>
+            <li class="pss-have-border">
+                <div>
+                    <span>Вид:</span>
+                    <select name="select_family" class="search-selector action-reload-subfamily" disabled></select>
+                </div>
+            </li>
+            <li class="pss-have-border">
+                <div>
+                    <span>Тип:</span>
+                    <select name="select_subfamily" class="search-selector" disabled></select>
+                </div>
+            </li>
+            <li class="pss-have-border">
+                <div>
+                    <span>Статус учета:</span>
+                    <select name="select_status" class="search-selector"></select>
+                </div>
+
+            </li>
+            <li class="pss-have-border">
+                <div>
+                    <span>Владелец:</span>
+                    <select name="select_owner" class="search-selector"></select>
+                </div>
+
+            </li>
+            <li class="button">
+                <div>
+                    <button id="actor-show-selected">Показать выбранное</button>
+                </div>
+            </li>
+            <li></li>
+            <li class="button">
+                <div>
+                    <button id="actor-show-all">Показать все</button>
+                </div>
+
+            </li>
+            <li></li>
+            <li class="button">
+                <div>
+                    <button id="actor-reset-selectors">Сбросить</button>
+                </div>
+
+            </li>
+        </ul>
+    </fieldset>
+    <hr>
+    <fieldset id="panel-output">
+        <legend> Результат: </legend>
+        <span id="panel-output-span">
+
+        </span>
+    </fieldset>
+</div>
+</body>
+</html>

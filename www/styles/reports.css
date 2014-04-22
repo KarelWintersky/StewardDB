@@ -1,0 +1,12 @@
+ul {
+    font-size: 120%;
+}
+
+ul li {
+    list-style-type: square;
+    line-height: 1.5em;
+}
+
+ul li.no-mark {
+    list-style-type: none;
+}

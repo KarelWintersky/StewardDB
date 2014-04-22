@@ -1,0 +1,103 @@
+/* layout */
+/* layout/header */
+header {
+    position: fixed;
+    background-color: #fffacd;
+    width: 100%;
+    height: 30px;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0 5px 0 #000;
+    z-index: 999;
+    display: table;
+}
+
+header #panel-header-inner {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+header a {
+    text-decoration: none;
+    color: navy;
+}
+header a:hover {
+    color: red;
+}
+
+/* header specific styles */
+header #panel-header-copyright {
+    float: left;
+    font-size: 120%;
+    padding-left: 1em;
+    padding-top: 2px;
+}
+
+#panel-header-copyright sub {
+    font-size: 50%;
+}
+
+header #panel-header-config {
+    float: right;
+}
+
+header button {
+    padding: 0; margin: 0;
+}
+
+header h4 {
+    display: inline;
+    color: navy;
+    padding-left: 0.5em;
+}
+
+/* main wrapper */
+#main-wrapper {
+    margin-top: 35px;
+    width: 100%;
+    padding-top: 10px;
+}
+
+
+/* layout/footer */
+footer {
+    font-size: small;
+    position: fixed;
+    background-color: #e0ffff;
+    width: 100%;
+    height: 25px;
+    font-size: 70%;
+    box-shadow: inset 0 0 5px 0 #000;
+    z-index: 999;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    display: table;
+    color: red;
+}
+
+footer>span {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 1em;
+}
+
+/* служебные стили */
+.hidden {
+    display: none;
+}
+
+.small , .small-text {
+    font-size: small;
+}
+
+span.hint {
+    font-style: italic;
+}
+
+/* hacks */
+input[type="text"]:focus {
+    outline: none;
+}
+

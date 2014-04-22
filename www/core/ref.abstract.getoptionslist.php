@@ -5,13 +5,24 @@ require_once('core.db.php');
 // отдает JSON объект для построения selector/options list на основе абстрактного справочника
 $ref = $_GET['ref'];
 
+$group = "";
+if (isset($_GET['group'])) {
+    $group = ($_GET['group'] != '' && $_GET['group'] != '0') ? "WHERE data_int = {$_GET['group']}" : " ";
+}
+
+
+$j_error = json_encode(array(
+   'data' => 'Справочник не существует',
+   'error' => '2'
+));
+
 if (!empty($ref))
 {
     $ref = $_GET['ref'];
     $link = ConnectDB();
 
-    $query = "SELECT * FROM $ref";
-    $result = mysql_query($query) or die($query);
+    $query = " SELECT * FROM $ref {$group}";
+    $result = mysql_query($query) or die($j_error);
     $ref_numrows = @mysql_num_rows($result) ;
 
     if ($ref_numrows>0)

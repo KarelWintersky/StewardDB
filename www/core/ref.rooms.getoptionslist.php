@@ -22,7 +22,8 @@ $ref = $_GET['ref'];
 
 $link = ConnectDB();
 
-$query = "SELECT * FROM rooms ORDER BY room_group, room_name";
+// $query = "SELECT * FROM rooms ORDER BY room_group, room_name";
+$query = "SELECT id, room_name, room_group FROM rooms ORDER BY room_group, 0+ LEFT(room_name,LOCATE(' ',room_name) - 1), room_name";
 
 $result = mysql_query($query) or die($query);
 

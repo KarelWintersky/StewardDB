@@ -30,8 +30,8 @@ if (true) {
         case 'insert':
         {
             $q = array(
-                'room_name' => mysql_escape_string($_GET['room_name']),
-                'room_group' => mysql_escape_string($_GET['room_group']),
+                'room_name' => trim(mysql_escape_string($_GET['room_name'])),
+                'room_group' => trim(mysql_escape_string($_GET['room_group'])),
                 'room_comment' => mysql_escape_string($_GET['room_comment']),
             );
             $qstr = MakeInsert($q, $reference);
@@ -47,8 +47,8 @@ if (true) {
         {
             $id = $_GET['id'];
             $q = array(
-                'room_name' => mysql_escape_string($_GET['room_name']),
-                'room_group' => mysql_escape_string($_GET['room_group']),
+                'room_name' => trim(mysql_escape_string($_GET['room_name'])),
+                'room_group' => trim(mysql_escape_string($_GET['room_group'])),
                 'room_comment' => mysql_escape_string($_GET['room_comment']),
             );
 

@@ -94,3 +94,75 @@ function setCookie (name, value, expires, path, domain, secure) {
         ((domain) ? "; domain=" + domain : "") +
         ((secure) ? "; secure" : "");
 }
+
+// http://proger.i-forge.net/Add_slashes-strip_slashes_in_JavaScript/ekj
+function unslash(str) {
+    var regexp = /\\(([abfnrtv])|o?([0-7]{1,3})|x([\da-fA-F]{1,2})|.)/g;
+    var symbols = {a: '\7', b: '\10', f: '\14', n: '\n', r: '\r', t: '\t', v: '\13'};
+
+    return str.replace(regexp, function (full, asis, seq, oct, hex) {
+        if (seq) {
+            return symbols[seq] || seq;
+        } else if (oct || hex) {
+            return String.fromCharCode(parseInt(oct, oct ? 8 : 18));
+        } else {
+            return asis;
+        }
+    });
+}
+
+/* get current date */
+function getCurrentDate()
+{
+    var _date = new Date();
+    return dateToDMY(_date);
+    // var d = _date.getDay(), m = _date.getMonth()+ 1, y = _date.getFullYear();
+    // return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+    // return (_date_day + '.' + _date_month + '.' + _date_year);
+}
+
+/* format input date to d.m.Y format */
+function dateToDMY(date)
+{
+    var d = date.getDate();
+    var m = date.getMonth() + 1;
+    var y = date.getFullYear();
+    return '' + (d <= 9 ? '0' + d : d) + '.' + (m<=9 ? '0' + m : m) + '.' + y;
+}
+
+
+
+/* prototype date format
+ *  http://stackoverflow.com/a/13452892
+ *  You can just expand the Date Object with a new format method as noted by meizz,
+ *  below is the code given by the author. And here is a jsfiddle.
+ meizz: http://huahun.iteye.com/blog/197367
+ jsfiddle: http://jsfiddle.net/gongzhitaao/G5kEQ/1/
+ */
+Date.prototype.format = function (format) {
+    var o = {
+        "M+":this.getMonth() + 1, //month
+        "d+":this.getDate(), //day
+        "h+":this.getHours(), //hour
+        "m+":this.getMinutes(), //minute
+        "s+":this.getSeconds(), //second
+        "q+":Math.floor((this.getMonth() + 3) / 3), //quarter
+        "S":this.getMilliseconds() //millisecond
+    };
+
+    if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1,
+                RegExp.$1.length == 1 ? o[k] :
+                    ("00" + o[k]).substr(("" + o[k]).length));
+        }
+    }
+    return format;
+};
+
+// найти в объекте (контейнере инпутов) инпут с именем name и занести в него data
+function SetNamedField(obj, name, data)
+{
+    obj.find("input[name='"+ name +"']").val( data );
+}
