@@ -1,4 +1,5 @@
 <?php
+require_once('jsonwrapper/jsonwrapper.php');
 /*
 http://www.site-do.ru/db/sql14.php
 

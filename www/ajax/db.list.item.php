@@ -97,9 +97,7 @@ CloseDB($link);
 
         <dt>Комментарий:</dt>
         <dd>
-            <textarea readonly class="pdlii-input" cols="60" rows="3">
-                <?=$row['i_comment']?>
-            </textarea>
+            <textarea readonly class="pdlii-input" cols="60" rows="3"><?=$row['i_comment']?></textarea>
         </dd>
     </dl>
 </div>

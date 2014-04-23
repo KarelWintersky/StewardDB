@@ -303,7 +303,7 @@ $(document).ready(function(){
         }
 
         if ( !(($this.find("input[name='a_inv_mytitle']").val().fulltrim() != '') ||
-            ($this.find("input[name='a_inv_mytitle']").val().fulltrim()  != '' )) ) {
+            ($this.find("input[name='a_inv_dbtitle']").val().fulltrim()  != '' )) ) {
             jMessage('Не указано хотя бы одно название предмета ');
             data_is_valid = false;
         }
