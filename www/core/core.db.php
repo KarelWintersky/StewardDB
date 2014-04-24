@@ -47,48 +47,6 @@ function MakeUpdate($arr,$table,$where="")
     return $str;
 }
 
-function DBLoginCheck($login, $password)
-{
-    global $CONFIG;
-    // возвращает массив с полями "error" и "message"
-    $link = ConnectDB();
-    // логин мы передали точно совершенно, мы это проверили в скрипте, а пароль может быть и пуст
-    // а) логин не существует
-    // б) логин существует, пароль неверен
-    // в) логин существует, пароль верен
-    $userlogin = mysql_real_escape_string(mb_strtolower($login));
-    $q_login = "SELECT `md5password`,`permissions`,`id` FROM users WHERE login = '$userlogin'";
-    if (!$r_login = mysql_query($q_login)) { /* error catch */ }
-
-    if (mysql_num_rows($r_login)==1) {
-        // логин существует
-        $user = mysql_fetch_assoc($r_login);
-        if ($password == $user['md5password']) {
-            // пароль верен
-            $return = array(
-                'error' => 0,
-                'message' => 'User credentials correct! ',
-                'id' => $user['id'],
-                'permissions' => $user['permissions'],
-                'url' => 'admin.html'
-            );
-        } else {
-            // пароль неверен
-            $return = array(
-                'error' => 1,
-                'message' => 'Пароль не указан или неверен! Проверьте раскладку клавиатуры! '
-            );
-        }
-    } else {
-        // логин не существует
-        $return = array(
-            'error' => 2,
-            'message' => 'Пользователь с логином '.$login.' в системе не обнаружен! '
-        );
-    }
-    return $return;
-}
-
 function DBIsTableExists($table)
 {
     return (mysql_query("SELECT 1 FROM $table WHERE 0")) ? true : false;

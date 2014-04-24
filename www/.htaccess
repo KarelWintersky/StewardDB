@@ -1,2 +1,2 @@
-DirectoryIndex index.html
+DirectoryIndex index.php
 AddHandler php-script .tpl

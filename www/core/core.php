@@ -1,10 +1,5 @@
 <?php
 require_once('jsonwrapper/jsonwrapper.php');
-/*
-http://www.site-do.ru/db/sql14.php
-
-
-*/
 
 /*
 конвертирует дату из человекопонятного представления в метку времени
@@ -126,6 +121,31 @@ function R_getDataById($id)
     }
     return $ret['room_name'];
 }
+
+function ConvertToHumanBytes($size) {
+    $filesizename = array(" Bytes", " K", " M", " G", " T", " P", " E", " Z", " Y");
+    return $size ? round($size / pow(1024, ($i = floor(log($size, 1024)))), 0) . $filesizename[$i] : '0 Bytes';
+}
+
+/**
+ * @param $url
+ */
+function Redirect($url)
+{
+    if (headers_sent() === false) header('Location: '.$url);
+}
+
+
+/**
+ * @param bool $debugmode
+ * @return bool
+ */
+function isAjaxCall($debugmode=false)
+{
+    $debug = (isset($debugmode)) ? $debugmode : false;
+    return ((!empty($_SERVER['HTTP_X_REQUESTED_WITH'])) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')) || ($debug);
+}
+
 
 
 ?>

@@ -1,3 +1,17 @@
+<?php
+require_once('core/core.php');
+require_once('core/core.db.php');
+require_once('core/core.kwt.php');
+require_once('core/core.login/core.login.php');
+
+
+$SID = session_id();
+if(empty($SID)) session_start();
+if (!isLogged()) {
+    header('Location: /core/core.login/');
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>

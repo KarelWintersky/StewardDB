@@ -1,10 +1,14 @@
 <?php
 require_once('core.php');
 require_once('core.db.php');
+require_once('core.kwt.php');
+require_once('core.login/core.login.php');
 
-/* $SID = session_id();
+$SID = session_id();
 if(empty($SID)) session_start();
-if (!isLogged()) header('Location: /core/'); */
+if (!isLogged()) {
+    header('Location: /core/core.login/');
+}
 
 /*
 Rooms reference module
@@ -17,7 +21,7 @@ comment varchar 64
 }
 
 */
-require_once('core.db.php');
+
 
 $reference = 'rooms';
 $return = '';
