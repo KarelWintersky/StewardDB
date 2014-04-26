@@ -73,7 +73,8 @@ function getQuery($get, $table='')
 
     $where = "
     WHERE
-ref_owners.id = {$table}.owner
+{$table}.is_deleted = 0
+AND ref_owners.id = {$table}.owner
 AND ref_status.id = {$table}.status
 AND rooms.id = {$table}.room ";
 

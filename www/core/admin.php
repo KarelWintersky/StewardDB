@@ -122,6 +122,10 @@ if (!isLogged()) {
                     </li>
                     <hr>
                     <li>
+                        <button data-href="db.list.deleted.php" class="admin-button-large action-button-is-link">Список удаленных объектов</button>
+                    </li>
+                    <hr>
+                    <li>
                         <button data-href="../" class="admin-button-large action-button-is-link">Exit</button>
                     </li>
                 </ul>

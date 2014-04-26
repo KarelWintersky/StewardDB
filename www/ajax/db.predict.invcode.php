@@ -8,7 +8,7 @@ $data = array();
 
 $ic = mysql_escape_string($_GET['code']);
 
-$query = "SELECT DISTINCT id, inv_code, cost_float, dbtitle, rooms.room_name, ref_status.data_str AS current_status
+$query = "SELECT DISTINCT {$table}.id, inv_code, cost_float, dbtitle, rooms.room_name, ref_status.data_str AS current_status
 FROM {$table}, rooms, ref_status
 WHERE inv_code LIKE '%{$ic}%'
 AND
