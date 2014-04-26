@@ -30,6 +30,7 @@ if (!isLogged()) {
     <script type="text/javascript" src="core/jq/jquery.colorbox-min.js"></script>
     <script src="core/js/core.js"></script>
     <script src="core/js/core.options.js"></script>
+    
 
 
     <script src="js/check.js"></script>
@@ -37,7 +38,7 @@ if (!isLogged()) {
 <body>
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало">StewardDB v 0.5</a>
+        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
             <sub> by Karel Wintersky</sub>
             |
             <h4 class="header-title">Добавление и проверка инвентарных номеров</h4>
@@ -84,7 +85,7 @@ if (!isLogged()) {
                     <select name="a_inv_owner" id="owner" class="input"></select>
                 </dd>
 
-                <dt>Состояние:</dt>
+                <dt>Статус:</dt>
                 <dd>
                     <select name="a_inv_status" id="status" class="input"></select>
                 </dd>

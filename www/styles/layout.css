@@ -101,3 +101,16 @@ input[type="text"]:focus {
     outline: none;
 }
 
+/* ajax spinner */
+#ajax-spinner {
+    display: none;
+    /* position: relative; */
+    position: absolute;
+    /* left: auto; */
+    top: 1px;
+    right: 5px; /* 270 - слева от jGrowl*/
+    width: 222px;
+    height: 28px;
+    z-index: 1000;
+    background: url('ajax_loader_blue_bar.gif');
+}

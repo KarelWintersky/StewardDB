@@ -1,30 +1,27 @@
 <?php
-
-$table = 'export_csv';
 require_once('../core/core.php');
 require_once('../core/core.db.php');
+$table = $CONFIG['main_data_table'];
 
 $link = ConnectDB();
 $data = array();
 
 $ic = mysql_escape_string($_GET['code']);
 
-// if ($ic === '') die(); //@todo: remove at deploy
-
-$query = "SELECT DISTINCT inv_id, inv_code, inv_cost_float, inv_dbtitle, rooms.room_name, ref_status.data_str AS current_status
-FROM export_csv, rooms, ref_status
+$query = "SELECT DISTINCT id, inv_code, cost_float, dbtitle, rooms.room_name, ref_status.data_str AS current_status
+FROM {$table}, rooms, ref_status
 WHERE inv_code LIKE '%{$ic}%'
 AND
-rooms.id = inv_room
+rooms.id = room
 AND
-ref_status.id = inv_status
-ORDER BY inv_code, room_name, inv_dbtitle";
+ref_status.id = status
+ORDER BY inv_code, room_name, dbtitle";
 
 $rq = mysql_query($query) or die("Ошибка в запросе: ".$query);
 $nr = @mysql_num_rows($rq);
 
 while ($r = mysql_fetch_assoc($rq)) {
-    $rows[ $r['inv_id'] ] = $r;
+    $rows[ $r['id'] ] = $r;
 }
 
 ?>
@@ -80,15 +77,15 @@ while ($r = mysql_fetch_assoc($rq)) {
         <?php foreach ($rows as $i => $row) { ?>
 
         <tr>
-            <td><?=$row['inv_id']?></td>
+            <td><?=$row['id']?></td>
             <td class="normal">
                 <strong class="link-like action-search-for-this-invcode"><?=$row['inv_code']?></strong>
             </td>
             <td>
-                <?=$row['inv_dbtitle']?>
+                <?=$row['dbtitle']?>
             </td>
             <td class="price">
-                <?=$row['inv_cost_float']?>
+                <?=$row['cost_float']?>
             </td>
             <td class="normal">
                 <?=$row['room_name']?>
@@ -105,12 +102,5 @@ while ($r = mysql_fetch_assoc($rq)) {
 
 
 </div>
-
-<!--
-<?php
-print_r($rows)
-?>
--->
-
 </body>
 </html>

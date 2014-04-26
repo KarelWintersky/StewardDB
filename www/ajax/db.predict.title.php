@@ -1,15 +1,15 @@
 <?php
-$table = 'export_csv';
 require_once('../core/core.php');
 require_once('../core/core.db.php');
+$table = $CONFIG['main_data_table'];
 
 $link = ConnectDB();
 $data = array();
 
 $title = isset($_GET['title']) ? $_GET['title'] : '';
 
-$query = "SELECT DISTINCT inv_cost_float, inv_dbtitle, inv_mytitle, inv_comment FROM export_csv
-WHERE inv_mytitle LIKE '%".$title."%' AND inv_dbtitle != '' ";
+$query = "SELECT DISTINCT cost_float, dbtitle, mytitle, comment FROM {$table}
+WHERE mytitle LIKE '%".$title."%' AND dbtitle != '' ";
 
 if ($title != '') {
     $rq = mysql_query($query) or die("Ошибка в запросе: ".$query);
@@ -79,6 +79,11 @@ if ($title != '') {
             font-size: small;
             color: gray;
         }
+        .link-like {
+            text-decoration: underline;
+            color: #00008b;
+        }
+
     </style>
     <script type="text/javascript">
         var _nr = <?=$nr?>;
@@ -106,10 +111,10 @@ if ($nr > 0) {
 foreach ($rows as $i => $row) {
 echo <<<ANY_ROW
     <tr>
-        <td><strong class="action-insert-this-to-dbtitle-input link-like">{$row['inv_dbtitle']}</strong></td>
-        <td class="mytitle"><span>{$row['inv_mytitle']}</span></td>
-        <td class="price"><span>{$row['inv_cost_float']}</span></td>
-        <td class="comment"><span>{$row['inv_comment']}</span></td>
+        <td><strong class="action-insert-this-to-dbtitle-input link-like">{$row['dbtitle']}</strong></td>
+        <td class="mytitle"><span>{$row['mytitle']}</span></td>
+        <td class="price"><span>{$row['cost_float']}</span></td>
+        <td class="comment"><span>{$row['comment']}</span></td>
     </tr>
 ANY_ROW;
 }

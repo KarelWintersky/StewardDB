@@ -49,7 +49,7 @@ if (!isLogged()) {
 
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало">StewardDB v 0.4</a>
+        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
             <sub> by Karel Wintersky</sub>
             |
             <h4 class="header-title">Отчеты</h4>

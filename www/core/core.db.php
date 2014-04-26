@@ -52,6 +52,9 @@ function DBIsTableExists($table)
     return (mysql_query("SELECT 1 FROM $table WHERE 0")) ? true : false;
 }
 
+function throw_ex($er){
+    throw new Exception($er);
+}
 
 
 ?>

@@ -1,7 +1,7 @@
 <?php
-$table = 'export_csv';
 require_once('../core/core.php');
 require_once('../core/core.db.php');
+$table = $CONFIG['main_data_table'];
 
 $inv_code = IsSet($_GET['inv_code']) ? $_GET['inv_code'] : -1;
 
@@ -26,7 +26,7 @@ if ($inv_code != -1 )
     } else if ( $nr == 0 ) {
         $data['state'] = 'notfound';
         $data['data']['inv_code'] = $inv_code;
-        $data['data']['inv_date_income_str'] = date("d.m.Y");
+        $data['data']['date_income_str'] = date("d.m.Y");
     } else if ($nr > 1) {
         $data['state'] = 'multi';
     }

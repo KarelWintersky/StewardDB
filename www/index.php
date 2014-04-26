@@ -39,7 +39,7 @@ if (!isLogged()) {
 
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало">StewardDB v 0.5</a>
+        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
             <sub> by Karel Wintersky</sub>
             |
             <h4 class="header-title">Выбор режима работы</h4>
@@ -52,7 +52,7 @@ if (!isLogged()) {
 
 <div id="main-wrapper">
     <ul>
-        <li><a href="list.php">Отчет</a></li>
+        <li><a href="list.php">Отчет по различным критериям</a></li>
         <li><a href="check.php"> Добавление и проверка инвентарных номеров  </a></li>
         <li><a href="export.reports.php">Экспорт отчетов</a></li>
         <li><a href="help.html" onclick="return false;"> Помощь </a></li>

@@ -33,24 +33,15 @@ function getQuery( queryString , limiter)
 */
 function setHashBySelectors(search_selector)
 {
-    // see also http://stackoverflow.com/a/5340658
-    // для русских букв возможно потребуется экранирование
     var selector = search_selector || ".search_selector";
     var hashstr = '';
     var val, name;
-    $.each( $(".search_selector") , function(id, data) {
+    $.each( $(selector) , function(id, data) {
         val = $(data).val();
         name = $(data).attr('name');
         if (val != '0')
             hashstr += name + "=" + val + "&";
-        // stackoverflow рекомендует экранирование символов, но пока что везде где
-        // тестировали прекрасно работало без экранирования (в адресную строку пишется русская буква)
-        // hashstr += encodeURIComponent(key) + "=" + encodeURIComponent(arr[key]) + "&";
     } );
-    // хэш будет выглядеть '#...&', поэтому при установке надо отрезать последний символ.
-    // пустой хэш - '#&' - его не нужно устанавливать.
-    // window.location.hash = (hashstr.length > 2) ? hashstr.substring(0, hashstr.length-1) : '';
-    // но лучше попробуем использовать HTML5 API
     if (hashstr.length > 2) {
         window.location.hash = hashstr.substring(0, hashstr.length-1)
     } else {

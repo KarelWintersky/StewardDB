@@ -24,6 +24,8 @@ $CONFIG['username'] = ($_SERVER['REMOTE_ADDR']==="127.0.0.1") ? $CFG['username']
 $CONFIG['password'] = ($_SERVER['REMOTE_ADDR']==="127.0.0.1") ? $CFG['password']['local']     : $CFG['password'][$remote_hosting_keyname];
 $CONFIG['database'] = ($_SERVER['REMOTE_ADDR']==="127.0.0.1") ? $CFG['database']['local']     : $CFG['database'][$remote_hosting_keyname];
 
+$CONFIG['application_title'] = 'Steward DB ver 0.7';
+$CONFIG['main_data_table']   = 'export_csv';
 
 global $CONFIG;
 ?>

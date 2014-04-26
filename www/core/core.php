@@ -48,20 +48,24 @@ function retVal($value, $default=0)
 */
 function getQuery($get, $table='')
 {
-    if ($table == '') $table = 'export_csv';
+    global $CONFIG;
+    if ($table == '') $table = $CONFIG['main_data_table'];
 
     $select = "
     SELECT
-  {$table}.inv_id AS i_id
+  {$table}.id AS i_id
 , {$table}.inv_code AS i_code
-, {$table}.inv_mytitle AS i_mt
-, {$table}.inv_dbtitle AS i_dt
-, DATE_FORMAT({$table}.inv_date_income, '%d.%m.%Y') AS i_di
-, {$table}.inv_comment AS i_comment
+, {$table}.mytitle AS i_mt
+, {$table}.dbtitle AS i_dt
+, DATE_FORMAT({$table}.date_income, '%d.%m.%Y') AS i_di
+, {$table}.comment AS i_comment
 , ref_owners.data_str AS r_owner
 , ref_status.data_str AS r_status
 , rooms.room_name AS r_room
-, {$table}.inv_cost_float AS i_cost
+, {$table}.cost_float AS i_cost
+, {$table}.owner AS i_owner
+, {$table}.room AS i_room
+, {$table}.status AS i_status
 ";
 
     $from = " FROM
@@ -69,12 +73,12 @@ function getQuery($get, $table='')
 
     $where = "
     WHERE
-ref_owners.id = {$table}.inv_owner
-AND ref_status.id = {$table}.inv_status
-AND rooms.id = {$table}.inv_room ";
+ref_owners.id = {$table}.owner
+AND ref_status.id = {$table}.status
+AND rooms.id = {$table}.room ";
 
     $go = "
-    ORDER BY inv_room, inv_dbtitle, inv_id ";
+    ORDER BY room, dbtitle, {$table}.id ";
 
     $family = retVal($get['family']);
     $subfamily = retVal($get['subfamily']);
@@ -93,11 +97,11 @@ AND rooms.id = {$table}.inv_room ";
         }
     }
 
-    $where .= (retVal($get['room']) != '0' ) ? " AND {$table}.inv_room = {$get['room']} " : " ";
-    $where .= (retVal($get['status']) != '0' ) ? " AND {$table}.inv_status = {$get['status']} " : " ";
-    $where .= (retVal($get['owner']) != '0' ) ? " AND {$table}.inv_owner = {$get['owner']} " :  "";
+    $where .= (retVal($get['room']) != '0' ) ? " AND {$table}.room = {$get['room']} " : " ";
+    $where .= (retVal($get['status']) != '0' ) ? " AND {$table}.status = {$get['status']} " : " ";
+    $where .= (retVal($get['owner']) != '0' ) ? " AND {$table}.owner = {$get['owner']} " :  "";
     // get id for unique request
-    $where .= (retVal($get['id']) != '0' ) ? " AND {$table}.inv_id = {$get['id']} " : " ";
+    $where .= (retVal($get['id']) != '0' ) ? " AND {$table}.id = {$get['id']} " : " ";
 
     return $select . $from . $where . $go;
 }

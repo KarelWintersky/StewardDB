@@ -45,12 +45,12 @@ function reloadSelectors()
 function setEditForm_foundItem(form, data)
 {
     form.trigger('reset');
-    SetNamedField(form, 'a_inv_id', data['inv_id']);
+    SetNamedField(form, 'a_inv_id', data['id']);
     SetNamedField(form, 'a_inv_code', data['inv_code']);
-    SetNamedField(form, 'a_inv_dbtitle', data['inv_dbtitle']);
-    SetNamedField(form, 'a_inv_mytitle', data['inv_mytitle']);
-    SetNamedField(form, 'a_inv_date_income_str', data['inv_date_income_str']);
-    SetNamedField(form, 'a_inv_comment', data['inv_comment']);
+    SetNamedField(form, 'a_inv_dbtitle', data['dbtitle']);
+    SetNamedField(form, 'a_inv_mytitle', data['mytitle']);
+    SetNamedField(form, 'a_inv_date_income_str', data['date_income_str']);
+    SetNamedField(form, 'a_inv_comment', data['comment']);
     return {
         'current_task_action'                   : 'ajax/db.item.update.php',
         'current_task_legend'                   : 'Обновление объекта с инвентарным номером',
@@ -58,9 +58,9 @@ function setEditForm_foundItem(form, data)
         'biv_copy'                              : 1,
         'biv_final'                             : 0,
         'task_mode'                             : 'edit',
-        'a_inv_rooms'                           : parseInt(data['inv_room']),
+        'a_inv_rooms'                           : parseInt(data['room']),
         'a_inv_status'                          : 1,
-        'a_inv_owner'                           : parseInt(data['inv_owner'])
+        'a_inv_owner'                           : parseInt(data['owner'])
     };
 }
 
@@ -69,7 +69,7 @@ function setEditForm_notfoundItem(form, data)
     form.trigger('reset');
     SetNamedField(form, 'a_inv_id', 0);
     SetNamedField(form, 'a_inv_code', data['inv_code']);
-    SetNamedField(form, 'a_inv_date_income_str', data['inv_date_income_str']);
+    SetNamedField(form, 'a_inv_date_income_str', data['date_income_str']);
     return {
         'current_task_action'                   : 'ajax/db.item.insert.php',
         'current_task_legend'                   : 'Добавление объекта с инвентарным номером',
@@ -157,7 +157,7 @@ $(document).ready(function(){
     $("#check_this_code")
         .focus()
         .on('click', function(){
-//            RestartSearch();
+            // RestartSearch();
             $("#fieldset_working_form").trigger('reset').hide();
             $('#fieldset_report').trigger('reset').hide();
     });

@@ -38,7 +38,7 @@ if (!isLogged()) {
 
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало">StewardDB v 0.5</a>
+        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
             <sub> by Karel Wintersky</sub>
             |
             <h4 class="header-title">Отчет о средствах</h4>
@@ -47,38 +47,38 @@ if (!isLogged()) {
 </header>
 
 <div id="main-wrapper">
-    <fieldset id="panel-search-selectors">
+    <fieldset id="panel-search-selectors" class="action-hash-selectors">
         <legend>Критерии поиска: </legend>
         <ul>
             <li class="pss-have-border">
                 <div>
                     <span>Помещение:</span>
-                    <select name="select_rooms" class="search-selector"></select>
+                    <select name="room" class="search-selector"></select>
                 </div>
             </li>
             <li class="pss-have-border">
                 <div>
                     <span>Вид:</span>
-                    <select name="select_family" class="search-selector action-reload-subfamily" disabled></select>
+                    <select name="family" class="action-reload-subfamily" disabled></select>
                 </div>
             </li>
             <li class="pss-have-border">
                 <div>
                     <span>Тип:</span>
-                    <select name="select_subfamily" class="search-selector" disabled></select>
+                    <select name="subfamily" class="" disabled></select>
                 </div>
             </li>
             <li class="pss-have-border">
                 <div>
                     <span>Статус учета:</span>
-                    <select name="select_status" class="search-selector"></select>
+                    <select name="status" class="search-selector"></select>
                 </div>
 
             </li>
             <li class="pss-have-border">
                 <div>
                     <span>Владелец:</span>
-                    <select name="select_owner" class="search-selector"></select>
+                    <select name="owner" class="search-selector"></select>
                 </div>
 
             </li>
@@ -109,6 +109,7 @@ if (!isLogged()) {
     <hr>
     <fieldset id="panel-output" class="table-hl-rows">
         <legend> Результат: </legend>
+        <div id="ajax-spinner"></div>
         <span id="panel-output-span">
 
         </span>
