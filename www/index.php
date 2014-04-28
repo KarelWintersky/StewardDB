@@ -2,13 +2,13 @@
 require_once('core/core.php');
 require_once('core/core.db.php');
 require_once('core/core.kwt.php');
-require_once('core/core.login/core.login.php');
+require_once('core/core.login.php');
 
 
 $SID = session_id();
 if(empty($SID)) session_start();
 if (!isLogged()) {
-    header('Location: /core/core.login/');
+    redirectToLogin();
 }
 
 ?>
@@ -39,13 +39,13 @@ if (!isLogged()) {
 
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
-            <sub> by Karel Wintersky</sub>
+        <div id="panel-header-copyright">
+            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
             |
             <h4 class="header-title">Выбор режима работы</h4>
         </div>
         <div id="panel-header-config">
-            <button id="actor-logout" class="panel-header-inner-button-logout">Logout</button>
+            <button id="actor-logout" class="panel-header-inner-button-logout">Выход из системы</button>
         </div>
     </div>
 </header>
@@ -56,7 +56,7 @@ if (!isLogged()) {
         <li><a href="check.php"> Добавление и проверка инвентарных номеров  </a></li>
         <li><a href="export.reports.php">Экспорт отчетов</a></li>
         <li><a href="help.html" onclick="return false;"> Помощь </a></li>
-        <li><a href="core/" target="_blank">Управляющий раздел</a></li>
+        <li><a href="core/">Управляющий раздел</a></li>
     </ul>
 </div>
 

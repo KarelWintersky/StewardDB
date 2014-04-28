@@ -2,12 +2,12 @@
 require_once('core.php');
 require_once('core.db.php');
 require_once('core.kwt.php');
-require_once('core.login/core.login.php');
+require_once('core.login.php');
 
 $SID = session_id();
 if(empty($SID)) session_start();
 if (!isLogged()) {
-    header('Location: /core/core.login/');
+    redirectToLogin();
 }
 
 /*

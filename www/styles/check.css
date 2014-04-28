@@ -80,6 +80,10 @@ input:focus {
     text-decoration: underline;
     color: #00008b;
 }
+.link-like:hover {
+    color: red;
+}
+
 
 .warning-message {
     color: red;

@@ -2,13 +2,13 @@
 require_once('core/core.php');
 require_once('core/core.db.php');
 require_once('core/core.kwt.php');
-require_once('core/core.login/core.login.php');
+require_once('core/core.login.php');
 
 
 $SID = session_id();
 if(empty($SID)) session_start();
 if (!isLogged()) {
-    header('Location: /core/core.login/');
+    redirectToLogin(); //header('Location: /core/core.login/');
 }
 
 $table = 'export_csv';
@@ -60,8 +60,8 @@ CloseDB($link);
 
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
-            <sub> by Karel Wintersky</sub>
+        <div id="panel-header-copyright">
+            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
             |
             <h4 class="header-title">Редактирование объекта</h4>
         </div>

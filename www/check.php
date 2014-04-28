@@ -2,13 +2,13 @@
 require_once('core/core.php');
 require_once('core/core.db.php');
 require_once('core/core.kwt.php');
-require_once('core/core.login/core.login.php');
+require_once('core/core.login.php');
 
 
 $SID = session_id();
 if(empty($SID)) session_start();
 if (!isLogged()) {
-    header('Location: /core/core.login/');
+    redirectToLogin();
 }
 
 ?>
@@ -38,17 +38,17 @@ if (!isLogged()) {
 <body>
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
-            <sub> by Karel Wintersky</sub>
+        <div id="panel-header-copyright">
+            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
             |
-            <h4 class="header-title">Добавление и проверка инвентарных номеров</h4>
+            <h4 class="header-title">Добавление и проверка</h4>
         </div>
         <div id="panel-header-config">
             |
             Добавлено: <input type="text" id="log-input-added" class="input-log" value="0" size="5">
             Обновлено: <input type="text" id="log-input-updated" class="input-log" value="0" size="5">
             |
-            <button id="actor-reload-references">Перегрузить справочники</button>
+            <button id="actor-reload-references">Обновить справочники</button>
         </div>
     </div>
 </header>
@@ -148,7 +148,7 @@ if (!isLogged()) {
     </fieldset>
 
     <fieldset id="fieldset_log">
-        <legend>Log: </legend>
+        <legend>Отчет: </legend>
         <div id="log" class="text-small">
 
         </div>
@@ -157,6 +157,7 @@ if (!isLogged()) {
 
 <footer class="flow-line">
     <span id="flow-error-line"></span>
+
 </footer>
 
 </body>

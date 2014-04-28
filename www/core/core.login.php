@@ -1,5 +1,10 @@
 <?php
 
+function redirectToLogin()
+{
+    header('Location: /entrance.php');
+}
+
 function isLogged()
 {
     $we_are_logged = true;

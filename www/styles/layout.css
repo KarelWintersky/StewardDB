@@ -17,6 +17,10 @@ header #panel-header-inner {
     vertical-align: middle;
 }
 
+header #panel-header-inner .header-title {
+    overflow: auto;
+}
+
 header a {
     text-decoration: none;
     color: navy;
@@ -49,6 +53,10 @@ header h4 {
     display: inline;
     color: navy;
     padding-left: 0.5em;
+}
+
+button.panel-header-inner-button-logout {
+    font-size: large;
 }
 
 /* main wrapper */
@@ -112,5 +120,5 @@ input[type="text"]:focus {
     width: 222px;
     height: 28px;
     z-index: 1000;
-    background: url('ajax_loader_blue_bar.gif');
+    background: url('images/ajax_loader_blue_bar.gif');
 }

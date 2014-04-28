@@ -26,16 +26,17 @@ $res = mysql_query($qstr, $link) or Die("Unable to update data in DB! ".$qstr);
 
 $data = array(
     'r_code' => $q['inv_code'],
-    'r_mytitle' => $q['inv_mytitle'],
-    'r_dbtitle' => $q['inv_dbtitle'],
-    'r_comment' => $q['inv_comment'],
-    'r_date_income_str' => $q['inv_date_income_str'],
-    'r_date_income_ts' => $q['r_date_income_ts'],
-    'r_room' => R_getDataById($q['inv_room']),
-    'r_owner' => AR_getDataById('ref_owners', $q['inv_owner']),
-    'r_status' => AR_getDataById('ref_status', $q['inv_status']),
+    'r_mytitle' => $q['mytitle'],
+    'r_dbtitle' => $q['dbtitle'],
+    'r_comment' => $q['comment'],
+    'r_date_income_str' => $q['date_income_str'],
+    'r_date_income_ts' => $q['date_income_ts'],
+    'r_room' => R_getDataById($q['room']),
+    'r_owner' => AR_getDataById('ref_owners', $q['owner']),
+    'r_status' => AR_getDataById('ref_status', $q['status']),
     'r_id'      => $id
 );
+
 
 $jresult = array(
     'state' => 'updated',

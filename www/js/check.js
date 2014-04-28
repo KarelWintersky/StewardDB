@@ -340,8 +340,18 @@ $(document).ready(function(){
                 $working_fieldset.hide();
 
                 $("#actor-end").focus();
-
-                var item_desc = '(' + res['new_id'] + ') № <strong class="action-insert-this-to-search-form link-like">' + res['data']['r_code'] + '</strong> / ' + unslash(res['data']['r_dbtitle']) + ' ( ' +unslash(res['data']['r_mytitle']) + ' ), ' + res['data']['r_room']  + ' <br>';
+                console.log(res['data']);
+                var item_desc = '('
+                    + res['new_id']
+                    + ') № <strong class="action-insert-this-to-search-form link-like">'
+                    + res['data']['r_code']
+                    + '</strong> / '
+                    + unslash(res['data']['r_dbtitle'])
+                    + ' ( '
+                    + unslash(res['data']['r_mytitle'])
+                    + ' ), '
+                    + res['data']['r_room']
+                    + ' <br>';
 
                 $("#log").prepend(res['message'] + item_desc);
             });

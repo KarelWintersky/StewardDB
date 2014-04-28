@@ -2,7 +2,7 @@
 require_once('core.php');
 require_once('core.db.php');
 require_once('core.kwt.php');
-require_once('core.login/core.login.php');
+require_once('core.login.php');
 
 
 $SID = session_id();
@@ -123,6 +123,9 @@ if (!isLogged()) {
                     <hr>
                     <li>
                         <button data-href="db.list.deleted.php" class="admin-button-large action-button-is-link">Список удаленных объектов</button>
+                    </li>
+                    <li>
+                        <button data-href="db.backup.php" class="admin-button-large action-button-is-link">Резервное копирование базы</button>
                     </li>
                     <hr>
                     <li>

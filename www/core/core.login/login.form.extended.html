@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Вход на сайт</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="/core/jq/jquery-1.10.2.min.js"></script>
+    <script src="/core/js/md5.js"></script>
+    <link rel="stylesheet" href="/styles/layout.css">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajaxSetup({cache: false});
+
+            $("#loginform").on('click','#logintry',function(event){
+                event.preventDefault();
+                $('#message').empty().hide();
+                var $form = $("#loginform").find('form');
+                fValid = true;
+                fValid = fValid && $form.find("input[name='login']").val().trim() != '';
+
+                if (fValid) {
+                    // проверяем связку по базе
+                    url = $form.attr("action");
+                    var posting = $.post(url,{
+                        login: $form.find("input[name='login']").val().trim(),
+                        password: md5($form.find("input[name='password']").val().trim())
+                    });
+                    posting.done(function(data){
+                        result = $.parseJSON(data);
+                        if (result['error'] == 0) {
+                            // default
+                            document.location.href = result['url'];
+                        } else {
+                            $('#message').fadeIn(500).html(result['message']).fadeOut(2500);
+                            $('#password_hint').fadeIn(500).html(result['password_hint']).fadeOut(2500);
+                        }
+                    });
+
+                } else {
+                    // логин пуст
+                    $('#message').fadeIn(500).html('Мне кажется, вы забыли указать имя пользователя. ').fadeOut(2500);
+                    $form.find("input[name='login']").val('');
+                }
+                event.preventDefault();
+            });
+        });
+    </script>
+    <style type="text/css">
+        #message {
+            display: none;
+            color: #ff4500;
+            font-size: large;
+        }
+        dl {
+            font-size: x-large;
+        }
+        dt {
+            float: left; /* Для размещения на одной строке */
+            width: 200px; /* Ширина для текста */
+            text-align: right; /* Выравнивание по правому краю */
+            padding-right: 5px; /* Отступ справа */
+            min-height: 1px; /* Минимальная высота */
+            font-size: 100%;
+        }
+        dd {
+            position: relative; /* Относительное позиционирование */
+            top: -2px; /* Смещаем поля вверх */
+            margin-bottom: 10px; /* Расстояние между строк */
+        }
+        dd input {
+            font-size: 100%;
+        }
+        button {
+            font-size: x-large;
+        }
+        #intro {
+            font-size: large;
+        }
+        fieldset legend {
+            color: blue;
+        }
+        #outtro {
+
+        }
+        strong {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<header id="panel-header">
+    <div id="panel-header-inner">
+        <div id="panel-header-copyright">
+            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало">{%application_title%}</a>
+            |
+            <h4 class="header-title">Система инвентарного учета</h4>
+        </div>
+    </div>
+</header>
+
+<div id="main-wrapper">
+    <fieldset id="intro">
+        <legend>Здравствуйте!</legend>
+        Для начала работы с базой вам следует ввести имя пользователя и пароль. <br>
+        Для Приморского района Санкт-Петербурга ваше имя пользователя выглядит: <strong>spb.primor.xx</strong> , где xx - ваши инициалы.<br>
+        Скорее всего, ваше имя пользователя <strong>spb.primor.ev</strong><br>
+    </fieldset>
+
+    <div id="loginform">
+        <form action="core/core.login/login.php" method="post">
+            <dl>
+                <dt>Имя пользователя: </dt>
+                <dd>
+                    <input type="text" name="login" required>
+                    <span id="message"></span>
+                </dd>
+                <dt>Пароль: </dt>
+                <dd>
+                    <input type="password" name="password">
+                    <span id="password_hint"></span>
+                </dd>
+                <dt></dt>
+                <dd><button type="submit" id="logintry">Вход</button></dd>
+            </dl>
+        </form>
+    </div>
+    <fieldset>
+        <legend>Инструкция по эксплуатации</legend>
+
+    </fieldset>
+</div>
+</body>
+</html>
