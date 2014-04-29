@@ -61,6 +61,8 @@ function throw_ex($er){
 function backup_tables($file, $host, $user, $pass, $name){
     $link = mysql_connect($host, $user, $pass);
     mysql_select_db($name, $link);
+    mysql_query("SET NAMES utf8", $link);
+
     file_put_contents($file, '');
 
     //получение списка таблиц

@@ -1,5 +1,7 @@
 <?php
+require_once('../core.config.php');
 require_once('../core.php');
+
 
 $_SESSION['u_id'] = -1;
 $_SESSION['u_permissions'] = -1;

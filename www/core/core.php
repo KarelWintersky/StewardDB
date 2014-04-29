@@ -9,7 +9,16 @@ function ConvertDateToTimestamp($str_date, $format="d/m/Y")
     if (function_exists('date_parse_from_format')) {
         $date_array = date_parse_from_format('d.m.Y',$str_date);
     } else {
-        $date_array = date_parse($str_date);
+        if (function_exists('date_parse')) {
+            $date_array = date_parse($str_date);
+        } else {
+            // date_parse not implemented
+            $date_array_pre = getdate(strtotime($str_date));
+            $date_array['month']    = $date_array_pre['mon'];
+            $date_array['day']      = $date_array_pre['mday'];
+            $date_array['year']     = $date_array_pre['year'];
+        }
+
     }
     return mktime(12, 0, 0, $date_array['month'], $date_array['day'], $date_array['year']);
 }
@@ -20,11 +29,22 @@ function ConvertDateToTimestamp($str_date, $format="d/m/Y")
 function ConvertDateToArray($str_date)
 {
     if (function_exists('date_parse_from_format')) {
-        $date_as_array = date_parse_from_format('d/m/Y',$str_date);
+        $date_array = date_parse_from_format('d.m.Y',$str_date);
     } else {
-        $date_as_array = date_parse($str_date);
+        if (function_exists('date_parse')) {
+            $date_array = date_parse($str_date);
+        } else {
+            // date_parse not implemented
+            $date_array_pre = getdate(strtotime($str_date));
+            $date_array['month']    = $date_array_pre['mon'];
+            $date_array['day']      = $date_array_pre['mday'];
+            $date_array['year']     = $date_array_pre['year'];
+            $date_array['hour']     = 12;
+            $date_array['minute']   = 0;
+            $date_array['second']   = 0;
+        }
     }
-    return $date_as_array;
+    return $date_array;
 }
 
 /*
