@@ -9,11 +9,42 @@ if(empty($SID)) session_start();
 if (!isLogged()) {
     redirectToLogin();
 }
+$t = time();
+$fname = "sql_dump_".$t;
+$path = "../_backup/";
+// $file = .$fname.$fext;
 
-$file = "../_backup/sql_dump_".time().".sql";
+backup_tables($path.$fname.".sql", $CONFIG['hostname'], $CONFIG['username'], $CONFIG['password'], $CONFIG['database']);
 
-backup_tables($file, $CONFIG['hostname'], $CONFIG['username'], $CONFIG['password'], $CONFIG['database']);
+if (function_exists('gzcompress')) {
+    $gz = gzopen($path.$fname.".gz", "wb9");
+    gzwrite($gz, file_get_contents($path.$fname.".sql"));
+    gzclose($gz);
+    unlink($path.$fname.".sql");
+    $name = $fname.".gz";
+} else {
+    $name = $fname.".sql";
+}
+
 
 ?>
+<html>
+    <head>
+        <title>Резервная копия базы StewardDB</title>
+        <style type="text/css">
+            button {
+                height: 60px;
+                width: 150px;
+                font-size: large;
+            }
+        </style>
+    </head>
+    <body>
+    Резервная копия базы сделана успешно.<br>
+    Дата создания копии: <?php echo date("d/m/Y H:i:s (P)", $t )?> <br>
+    Файл с резервной копией: <a href="/_backup/<?=$name?>"><?=$name?></a><br>
+    <button onClick="window.location.href='/core/'">Назад</button>
+    </body>
+</html>
 
-<button onClick="window.location.href='/core/'">Назад</button>
+
