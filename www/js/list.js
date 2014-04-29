@@ -6,7 +6,7 @@ var backend_url = '/ajax/db.list.all.php';
 {
     var result = true;
     if (status_selector = preloadOptionsList('core/ref.abstract.getoptionslist.php?ref=ref_status')) {
-        BuildSelector('status', status_selector, 'любое!', 1);
+        BuildSelector('status', status_selector, 'любой!', 1);
         console.log('Категории качества загружены; ');
     } else {$.jGrowl('Ошибка загрузки категорий качества'); result=false; }
 

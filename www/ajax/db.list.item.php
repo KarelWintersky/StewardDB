@@ -4,9 +4,11 @@ require_once('../core/core.db.php');
 $table = $CONFIG['main_data_table'];
 
 $id = retVal($_GET['id']);
+$is_deleted = retVal($_GET['is_deleted']);
 
 $get['id'] = $id;
-$query = getQuery($get, 'export_csv');
+
+$query = getQuery($_GET, $table);
 
 $link = ConnectDB();
 
@@ -48,12 +50,17 @@ CloseDB($link);
         font-size: large;
     }
 </style>
-
+<!--
+<?=$query?>
+-->
 <div id="popup-db-list-item-info">
     <dl>
         <dt>Внутренний №:</dt>
         <dd>
             <input type="text" size="30" class="pdlii-input" readonly value="<?=$row['i_id']?>">
+            <?php
+            if ($is_deleted) echo '<span class="pdlii-warning">Объект удален!!!</span>';
+            ?>
         </dd>
 
         <dt>Инвентарный номер:</dt>
@@ -102,7 +109,15 @@ CloseDB($link);
         </dd>
         <dt></dt>
         <dd>
-            <button class="action-edit-by-id" data-id="<?=$row['i_id']?>">Редактировать запись</button>
+            <button class="action-edit-by-id action-restore-item" data-id="<?=$row['i_id']?>"><span>Редактировать запись</span></button>
+<?php //@todo: место для потенциального бага!!!
+/*  Здесь у кнопки сразу два класса - action-edit & action-remove. Я так сделал, чтобы не плодить
+два разных файла для показа информации по предмету - один вызывается из list, другой - из list.deleted
+Другой вариант - передовать в этот скрипт имя экшен-класса. Тоже усложнение.
+Баг возникнет, если в одном списке-отображении одновременно будут использоваться УДАЛЕНИЕ и РЕДАКТИРОВАНИЕ
+информации. Если такое возникнет - придется что-то делать.
+*/
+?>
         </dd>
     </dl>
 </div>

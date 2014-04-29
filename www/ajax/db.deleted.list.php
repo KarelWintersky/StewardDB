@@ -3,10 +3,10 @@ require_once('../core/core.php');
 require_once('../core/core.db.php');
 $table = $CONFIG['main_data_table'];
 
-$get_total_cost = retVal($_GET['get_total_cost'], 0);
+// $get = $_GET;
+// $get['is_deleted'] = 1;
 
-if ( $_GET['status'] == 2 ) $get_total_cost = 1;
-
+// $query = getQuery(array('is_deleted' => 1), $table);
 $query = getQuery($_GET, $table);
 
 $link = ConnectDB();
@@ -29,9 +29,7 @@ if ($nr > 0) {
 /* stripcslashes($row['i_comment']) */
 CloseDB($link);
 ?>
-<!--
-[<?=$nr?>] : <?=$query?>
- -->
+<!-- [<?=$nr?>] : <?=$query?> -->
 <style type="text/css">
     .table_items_list {
         width: 100%;
@@ -57,9 +55,8 @@ CloseDB($link);
 
 <div id="list_items_wrapper">
 
-<?php
-    if ($nr > 0) {
-        ?>
+    <?php
+    if ($nr > 0) { ?>
         <div>Всего загружено: <?=$total_loaded?></div>
         <table border="1" class="table_items_list" id="exportable">
             <tr>
@@ -72,7 +69,7 @@ CloseDB($link);
                 <th>
                     Название
                     <br>
-                    <small>Нажмите на содержимое ячейки для подробностей</small>
+                    <small>Нажмите на содержимое ячейки для информации и восстановления</small>
                 </th>
                 <th class="td-small">
                     Дата постановки<br>
@@ -92,7 +89,7 @@ CloseDB($link);
                 </th>
             </tr>
 
-<?php foreach ($rows as $i => $row) { ?>
+            <?php foreach ($rows as $i => $row) { ?>
 
             <tr>
                 <td class="td-center">
@@ -121,19 +118,21 @@ CloseDB($link);
                 <td>
                     <?=$row['r_room']?>
                 </td>
+<!--
+                <td class="td-center">
+                    <button data-id="<?=$row['i_id']?>" class="action-restore-item">Восстановить</button>
+                </td> -->
             </tr>
-<?php }
+            <?php }
             if ($get_total_cost != 0) {  ?>
-<tr>
-    <td colspan="3">Итоговая стомость списанных объектов: </td>
-    <td colspan="5"><span class="price"><?=$total_cost?></span></td>
-</tr>
+                <tr>
+                    <td colspan="3">Итоговая стомость списанных объектов: </td>
+                    <td colspan="5"><span class="price"><?=$total_cost?></span></td>
+                </tr>
 
-<?php } ?>
+                <?php } ?>
         </table>
         <?php
-//@todo: одно из этих полей надо убрать - выводить полную стоимость списанных объектов ИЛИ
-// в таблице, или ниже таблицы отдельно. Непонятно!
         if ($get_total_cost != 0) {
             ?><hr>
             Итоговая стоимость списанных объектов: <span class="price"><?=$total_cost?></span>

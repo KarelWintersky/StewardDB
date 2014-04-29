@@ -122,3 +122,8 @@ input[type="text"]:focus {
     z-index: 1000;
     background: url('images/ajax_loader_blue_bar.gif');
 }
+
+/* классы главного меню */
+#main-menu a:hover {
+    color: #c71585;
+}

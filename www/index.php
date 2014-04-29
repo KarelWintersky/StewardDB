@@ -51,7 +51,7 @@ if (!isLogged()) {
 </header>
 
 <div id="main-wrapper">
-    <ul>
+    <ul id="main-menu">
         <li><a href="list.php">Отчет по различным критериям</a></li>
         <li><a href="check.php"> Добавление и проверка инвентарных номеров  </a></li>
         <li><a href="export.reports.php">Экспорт отчетов</a></li>

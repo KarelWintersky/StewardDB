@@ -8,12 +8,12 @@ $id = mysql_escape_string($_GET['id']);
 $link = ConnectDB();
 
 $jresult = array(
-    'state' => 'deleted',
+    'state' => 'done',
     'error' => 0,
 );
 
 try {
-    $q = "UPDATE {$table} SET is_deleted = 1, status = 0 WHERE id = '{$id}'";
+    $q = "UPDATE {$table} SET is_deleted = 0 WHERE id = '{$id}'";
     $r = mysql_query($q) or throw_ex(mysql_error());
 } catch (exception $e) {
     $jresult = array(

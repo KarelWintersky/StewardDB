@@ -68,18 +68,27 @@ function getQuery($get, $table='')
 , {$table}.status AS i_status
 ";
 
-    $from = " FROM
-    {$table}, rooms, ref_owners, ref_status ";
-
-    $where = "
+    /* $from = " FROM
+    {$table} LEFT JOIN ref_status ON {$table}.status = ref_status.id
+    , rooms, ref_owners  "; */
+    /* $where = "
     WHERE
-{$table}.is_deleted = 0
-AND ref_owners.id = {$table}.owner
+ref_owners.id = {$table}.owner
 AND ref_status.id = {$table}.status
-AND rooms.id = {$table}.room ";
+AND rooms.id = {$table}.room "; */
 
-    $go = "
-    ORDER BY room, dbtitle, {$table}.id ";
+    // Правильный запрос с join'ами
+    $from = " FROM
+    {$table}
+    LEFT JOIN ref_status    ON {$table}.status = ref_status.id
+    LEFT JOIN rooms         ON {$table}.room = rooms.id
+    LEFT JOIN ref_owners    ON {$table}.owner = ref_owners.id
+    ";
+
+    $where = " WHERE ";
+
+    // get by 'is deleted' for deleted list request
+    $where .= (retVal($get['is_deleted']) != '0' ) ? " {$table}.is_deleted = 1 " : " {$table}.is_deleted = 0 ";
 
     $family = retVal($get['family']);
     $subfamily = retVal($get['subfamily']);
@@ -101,8 +110,11 @@ AND rooms.id = {$table}.room ";
     $where .= (retVal($get['room']) != '0' ) ? " AND {$table}.room = {$get['room']} " : " ";
     $where .= (retVal($get['status']) != '0' ) ? " AND {$table}.status = {$get['status']} " : " ";
     $where .= (retVal($get['owner']) != '0' ) ? " AND {$table}.owner = {$get['owner']} " :  "";
-    // get id for unique request
+    // get by id for unique request
     $where .= (retVal($get['id']) != '0' ) ? " AND {$table}.id = {$get['id']} " : " ";
+
+    $go = "
+    ORDER BY room, dbtitle, {$table}.id ";
 
     return $select . $from . $where . $go;
 }

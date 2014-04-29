@@ -87,7 +87,7 @@ if (!isLogged()) {
 
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало" onclick="return false;">StewardDB v 0.2</a>
+        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
             <sub> by Karel Wintersky</sub>
             |
             <h4 class="header-title">Административный раздел</h4>
@@ -122,14 +122,15 @@ if (!isLogged()) {
                     </li>
                     <hr>
                     <li>
-                        <button data-href="db.list.deleted.php" class="admin-button-large action-button-is-link">Список удаленных объектов</button>
+                        <button data-href="list.deleted.php" class="admin-button-large action-button-is-link">Список удаленных объектов</button>
                     </li>
+                    <hr>
                     <li>
                         <button data-href="db.backup.php" class="admin-button-large action-button-is-link">Резервное копирование базы</button>
                     </li>
                     <hr>
                     <li>
-                        <button data-href="../" class="admin-button-large action-button-is-link">Exit</button>
+                        <button data-href="/" class="admin-button-large action-button-is-link">Exit</button>
                     </li>
                 </ul>
             </td>
@@ -137,7 +138,6 @@ if (!isLogged()) {
             </td>
         </tr>
     </table>
-    <div><a href="/">Main site</a></div>
     <div id="footer">© Karel Wintersky, 01-04-2014 - ?.</div>
 
 
