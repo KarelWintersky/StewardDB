@@ -1,8 +1,7 @@
 var rooms_selector, status_selector, owners_selector, family_selector, subfamily_selector;
 var current_family = 0;
-var backend_url = '/ajax/db.list.all.php';
 
-    function list_reloadSelectors()
+function list_reloadSelectors()
 {
     var result = true;
     if (status_selector = preloadOptionsList('core/ref.abstract.getoptionslist.php?ref=ref_status')) {
@@ -54,7 +53,6 @@ $(document).ready(function(){
     // если хэш установлен - нужно загрузить статьи согласно выбранным позициям
     var query = (window.location.hash).substr(1);
     if (query !== '') {
-        console.log(backend_url + query + '<br>');
         $("#panel-output-span").empty().load(backend_url + '?' + query);
     }
 
@@ -98,24 +96,20 @@ $(document).ready(function(){
         query += "&status="+status;
         query += "&owner="+owner;
 
-        console.log(backend_url + query + '<br>');
         $("#panel-output-span").empty().load(backend_url + query);
     });
 
     //$("#timecounter")
     $(document)
         .on('ajaxSend', function(){
-            $("#ajax-spinner").show();
-            console.log('ajaxSend');
+            $("#ajax-spinner").show(); // console.log('ajaxSend');
         })
         .on('ajaxComplete', function(){
-            $("#ajax-spinner").hide();
-            console.log('ajaxComplete');
+            $("#ajax-spinner").hide(); // console.log('ajaxComplete');
         });
 
     $("#actor-show-all").on('click', function(){
-        var query = '?summary=0';
-        console.log(backend_url + query + '<br>');
+        var query = '?summary=0'; // console.log(backend_url + query + '<br>');
         $("#panel-output-span").empty().load(backend_url + query);
     });
 

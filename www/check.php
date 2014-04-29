@@ -30,16 +30,13 @@ if (!isLogged()) {
     <script type="text/javascript" src="core/jq/jquery.colorbox-min.js"></script>
     <script src="core/js/core.js"></script>
     <script src="core/js/core.options.js"></script>
-    
-
-
     <script src="js/check.js"></script>
 </head>
 <body>
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
+            <span title="by Karel Wintersky">©</span> <a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
             |
             <h4 class="header-title">Добавление и проверка</h4>
         </div>

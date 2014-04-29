@@ -73,10 +73,11 @@ function db_SaveItem(target_form)
             if (res['state'] != 'updated') {
                 $.jGrowl('Ошибка обновления данных!')
             } else {
+                // console.log( $this.find("input[name='a_inv_price']").val() );
                 window.history.back();
             }
         });
-    event.preventDefault();
+    // event.preventDefault();
     return false;
 }
 
@@ -136,7 +137,7 @@ $(document).ready(function(){
 
     /* тут вопрос юзерфрендовости:
     * а) удалив/обновив, можно убрать форму редактирования, нарисовать "все ок" и сделать кнопку "назад"
-    * б) удалив/обновив, можно сразу идти назад */
+    * + б) удалив/обновив, можно сразу идти назад */
 
     $("#action-delete-item").on('click', function(){
         db_RemoveItem();

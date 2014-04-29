@@ -15,6 +15,10 @@ $CFG = array(
     'database' => array(
         'local' => 'stewarddb',
         'pfrf' => 'stewarddb',
+    ),
+    'basepath' => array(
+        'local' => '',
+        'pfrf'  => '/stewarddb'
     )
 );
 $remote_hosting_keyname = 'pfrf';
@@ -25,7 +29,10 @@ $CONFIG['password'] = ($_SERVER['REMOTE_ADDR']==="127.0.0.1") ? $CFG['password']
 $CONFIG['database'] = ($_SERVER['REMOTE_ADDR']==="127.0.0.1") ? $CFG['database']['local']     : $CFG['database'][$remote_hosting_keyname];
 
 $CONFIG['application_title'] = 'Steward DB ver 0.7';
-$CONFIG['main_data_table']   = 'export_csv';
+$CONFIG['main_data_table']   = 'export_csv'; //
+$CONFIG['basepath'] = ($_SERVER['REMOTE_ADDR']==="127.0.0.1") ? $CFG['basepath']['local']     : $CFG['basepath'][$remote_hosting_keyname];
+
+// <?=$CONFIG['basepath']? >
 
 global $CONFIG;
 ?>

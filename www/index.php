@@ -27,7 +27,7 @@ if (!isLogged()) {
     <script type="text/javascript">
         $(document).ready(function(){
             $('#actor-logout').on('click', function(){
-                document.location.href = '/core/core.login/logout.php';
+                document.location.href = '<?=$CONFIG['basepath']?>/core/core.login/logout.php';
             });
         });
     </script>
@@ -40,7 +40,7 @@ if (!isLogged()) {
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
+            <span title="by Karel Wintersky">©</span> <a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
             |
             <h4 class="header-title">Выбор режима работы</h4>
         </div>

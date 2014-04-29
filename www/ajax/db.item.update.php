@@ -4,14 +4,14 @@ require_once('../core/core.db.php');
 $table = $CONFIG['main_data_table'];
 
 $id = mysql_escape_string($_GET['inv_id']);
-
 $q = array(
     'inv_code' => mysql_escape_string($_GET['inv_code']),
     'mytitle' => mysql_escape_string($_GET['inv_mytitle']),
     'dbtitle' => mysql_escape_string($_GET['inv_dbtitle']),
     'room' => mysql_escape_string($_GET['inv_room']),
     'status' => mysql_escape_string($_GET['inv_status']),
-    'cost_float' => mysql_escape_string($_GET['inv_price']),
+    'cost_float' => mysql_escape_string(RetVal($_GET['inv_price'], '')), // cost!
+    // 'cost_float' => mysql_escape_string($_GET['inv_price']), // cost!
     'owner' => mysql_escape_string($_GET['inv_owner']),
     'comment' => mysql_escape_string($_GET['inv_comment']),
     'date_income_str' => mysql_escape_string($_GET['inv_date_income_str']),
@@ -22,6 +22,7 @@ $q['date_income'] = Date('Y-m-d', $q['date_income_ts'] );
 $link = ConnectDB();
 
 $qstr = MakeUpdate($q, $table, "WHERE id = {$id}");
+
 $res = mysql_query($qstr, $link) or Die("Unable to update data in DB! ".$qstr);
 
 $data = array(
@@ -36,7 +37,6 @@ $data = array(
     'r_status' => AR_getDataById('ref_status', $q['status']),
     'r_id'      => $id
 );
-
 
 $jresult = array(
     'state' => 'updated',

@@ -37,5 +37,4 @@ if ($inv_code != -1 )
 
 CloseDB($link);
 print(json_encode($data));
-//print_r($data);
 ?>

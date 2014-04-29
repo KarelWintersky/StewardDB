@@ -160,3 +160,9 @@ function SetNamedField(obj, name, data)
 {
     obj.find("input[name='"+ name +"']").val( data );
 }
+
+// not used
+function Crawler_Message(message)
+{
+    $("#flow-error-line").show().append(message).fadeOut(2000);
+}

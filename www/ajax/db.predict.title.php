@@ -93,9 +93,8 @@ if ($title != '') {
 </head>
 <body>
 <div id="title_prediction_wrapper">
-<?php
-if ($nr > 0) {
-    ?>
+
+<?php if ($nr > 0) { ?>
 
 <table border="1" class="table_title_prediction">
     <caption>Выберите вариант названия объекта<br>
@@ -107,29 +106,25 @@ if ($nr > 0) {
         <th>Комментарий</th>
     </tr>
 
-<?php
-foreach ($rows as $i => $row) {
-echo <<<ANY_ROW
+<?php foreach ($rows as $i => $row) { ?>
+
     <tr>
-        <td><strong class="action-insert-this-to-dbtitle-input link-like">{$row['dbtitle']}</strong></td>
-        <td class="mytitle"><span>{$row['mytitle']}</span></td>
-        <td class="price"><span>{$row['cost_float']}</span></td>
-        <td class="comment"><span>{$row['comment']}</span></td>
+        <td><strong class="action-insert-this-to-dbtitle-input link-like"><?=$row['dbtitle']?></strong></td>
+        <td class="mytitle"><span><?=$row['mytitle']?></span></td>
+        <td class="price"><span><?=$row['cost_float']?></span></td>
+        <td class="comment"><span><?=$row['comment']?></span></td>
     </tr>
-ANY_ROW;
-}
-?>
+
+<?php } ?>
+
 </table>
-<?php
 
-} else {
+<?php } else { ?>
 
-?>
 <div class="warning">Возможных объектов в базе данных не найдено!</div>
 
-<?php
-}
-?>
+<?php } ?>
+
 </div>
 </body>
 </html>

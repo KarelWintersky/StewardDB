@@ -2,7 +2,8 @@
 
 function redirectToLogin()
 {
-    header('Location: /entrance.php');
+    global $CONFIG;
+    header('Location: '.$CONFIG['basepath'].'/entrance.php');
 }
 
 function isLogged()
@@ -40,7 +41,7 @@ function DBLoginCheck($login, $password)
                 'message' => 'User credentials correct! ',
                 'id' => $user['id'],
                 'permissions' => $user['permissions'],
-                'url' => '/index.php'
+                'url' => $CONFIG['basepath'].'/index.php'
             );
         } else {
             // пароль неверен

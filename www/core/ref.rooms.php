@@ -356,7 +356,7 @@ TABLE_IS_EMPTY;
             });
 
             $("#actor-exit").on('click',function(event){
-                location.href = '/core/';
+                location.href = '<?=$CONFIG['basepath']?>/core/';
             });
 
         });

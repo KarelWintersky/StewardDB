@@ -50,7 +50,7 @@ if (!isLogged()) {
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
+            <span title="by Karel Wintersky">©</span> <a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
             |
             <h4 class="header-title">Отчеты</h4>
         </div>
@@ -67,7 +67,7 @@ if (!isLogged()) {
             <a href="ajax/report.get.php?report=get_items_are_in_rooms&" class="action-get-report" download>Список предметов с инв.номерами по кабинетам</a>
         </li>
         <li class="no-mark"><hr></li>
-        <li class="no-mark"><<< <a href="/"> Назад </a></li>
+        <li class="no-mark"><<< <a href="<?=$CONFIG['basepath']?>/"> Назад </a></li>
     </ul>
 </div>
 

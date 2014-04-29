@@ -2,11 +2,6 @@ var rooms_selector, status_selector, owners_selector;
 var log_added = 0;
 var log_updated = 0;
 
-function Crawler_Message(message)
-{
-    $("#flow-error-line").show().append(message).fadeOut(2000);
-}
-
 function jMessage(message, delay)
 {
     var d = delay || 2000;
@@ -260,12 +255,10 @@ $(document).ready(function(){
                 });
                 return false;
             } else {
-                // var $form = $("#fieldset_working_form");
                 var $form = $working_fieldset.find('form');
 
                 if (result['state'] == 'found') {
-                    // инвентарный код в БД найден, владелец предмета известен, загрузка полей формы
-                    // для редактирования объекта
+                    // инвентарный код в БД найден, владелец предмета известен, загрузка полей формы для редактирования объекта
                     form_state = setEditForm_foundItem($form, result['data']);
                 }
 
@@ -280,9 +273,7 @@ $(document).ready(function(){
                     form_state = setEditForm_newItem($form, result['data']);
                 } */
 
-                /* */
                 setEditForm_Update($working_fieldset, form_state);
-                /* */
 
                 $working_fieldset.show();
 

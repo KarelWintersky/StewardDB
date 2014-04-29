@@ -24,5 +24,4 @@ try {
 
 CloseDB($link);
 print(json_encode($jresult));
-
 ?>

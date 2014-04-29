@@ -11,7 +11,7 @@ if (!isLogged()) {
 }
 $t = time();
 $fname = "sql_dump_".$t;
-$path = "../_backup/";
+$path = "../_backup/"; // $CONFIG['basepath']
 // $file = .$fname.$fext;
 
 backup_tables($path.$fname.".sql", $CONFIG['hostname'], $CONFIG['username'], $CONFIG['password'], $CONFIG['database']);
@@ -42,8 +42,8 @@ if (function_exists('gzcompress')) {
     <body>
     Резервная копия базы сделана успешно.<br>
     Дата создания копии: <?php echo date("d/m/Y H:i:s (P)", $t )?> <br>
-    Файл с резервной копией: <a href="/_backup/<?=$name?>"><?=$name?></a><br>
-    <button onClick="window.location.href='/core/'">Назад</button>
+    Файл с резервной копией: <a href="<?=$CONFIG['basepath']?>/_backup/<?=$name?>"><?=$name?></a><br>
+    <button onClick="window.location.href='<?=$CONFIG['basepath']?>/core/'">Назад</button>
     </body>
 </html>
 

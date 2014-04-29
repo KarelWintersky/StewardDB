@@ -8,14 +8,14 @@ require_once('core/core.login.php');
 $SID = session_id();
 if(empty($SID)) session_start();
 if (!isLogged()) {
-    redirectToLogin(); //header('Location: /core/core.login/');
+    redirectToLogin();
 }
 
 $table = 'export_csv';
 
 $id = retVal($_GET['id']);
 $get['id'] = $id;
-$query = getQuery($get, 'export_csv');
+$query = getQuery($get, $CONFIG['main_data_table']);
 
 $link = ConnectDB();
 
@@ -61,7 +61,7 @@ CloseDB($link);
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
+            <span title="by Karel Wintersky">©</span> <a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
             |
             <h4 class="header-title">Редактирование объекта</h4>
         </div>
@@ -147,3 +147,4 @@ CloseDB($link);
 
 
 </body>
+</html>

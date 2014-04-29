@@ -143,7 +143,6 @@ xxx;
                     $rows[] = $ref_record;
                 }
             }
-            // printr($rows);die;
             // визуализация
             $return .= <<<ADV_TABLE_START
 <table border="1" width="100%">
@@ -246,7 +245,7 @@ TABLE_IS_EMPTY;
                 border: 1px solid gray;
                 overflow-y: scroll;
             }
-            .centred_cell, th {
+            th {
                 text-align: center;
             }
             .button-large {
@@ -294,7 +293,6 @@ TABLE_IS_EMPTY;
                 result = $.parseJSON(data);
                 if (result['error']==0) {
                     Abstract_ReloadContent("#ref_list");
-                    // $("#ref_list").empty().load("?action=list&ref="+ref_name);
                     $( source ).dialog( "close" );
                 } else {
                     $( source ).dialog( "close" );
@@ -314,7 +312,6 @@ TABLE_IS_EMPTY;
             getting.done(function(data){
                 result = $.parseJSON(data);
                 if (result['error']==0) {
-                    // $("#ref_list").empty().load("?action=list&ref="+ref_name);
                     Abstract_ReloadContent("#ref_list");
                     $( source ).dialog( "close" );
                 } else {
@@ -377,10 +374,7 @@ TABLE_IS_EMPTY;
 
         $(document).ready(function () {
             $.ajaxSetup({cache: false, async: false });
-            // var ref_field_comments = Abstract_LoadFieldComments();
             Abstract_SetFieldLabels( Abstract_LoadFieldComments(ref_name) );
-
-            // $("#ref_list").load("?action=list&ref="+ref_name);
             Abstract_ReloadContent("#ref_list");
 
             /* вызов и обработчик диалога ADD-ITEM */
@@ -463,9 +457,12 @@ TABLE_IS_EMPTY;
             });
 
             $("#actor-exit").on('click',function(event){
-                location.href = '/core/';
+                location.href = '<?=$CONFIG['basepath']?>/core/';
             });
-
+            //@hint:
+            // center all buttons in 'control' TD at output table
+            // CSS class can't be used because table built dynamically
+            $("td:has(button)").css('text-align', 'center');
 
 
         });

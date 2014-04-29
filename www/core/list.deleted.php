@@ -40,7 +40,9 @@ if (!isLogged()) {
         }
 
         $(document).ready(function () {
-            var backend_url = '/ajax/db.deleted.list.php?is_deleted=1';
+            var base_url = '<?=$CONFIG['basepath']?>';
+
+            var backend_url = base_url + '/ajax/db.deleted.list.php?is_deleted=1';
             $.ajaxSetup({cache: false, async: false });
 
             reloadItemsList(backend_url, 'Данные загружены');
@@ -54,7 +56,7 @@ if (!isLogged()) {
             });
 
             $("#actor-purge-items").on('click', function(){
-                $.get('/ajax/db.deleted.purge.php').done(function(data){
+                $.get(base_url + '/ajax/db.deleted.purge.php').done(function(data){
                     var res = (data != '') ? $.parseJSON(data) : {'status': 'null' } ;
                     res['state'] == 'done' ? reloadItemsList(backend_url, 'Записи, помеченные на удаление окончательно уничтожены') : $.jGrowl('Ошибка очистки!');
                 });
@@ -64,7 +66,7 @@ if (!isLogged()) {
                     .on('click', ".action-show-extended-info-for-id", function(){
                         var id = $(this).attr('data-id');
                         $.colorbox({
-                            href: '/ajax/db.list.item.php?is_deleted=1&id='+id,
+                            href: base_url + '/ajax/db.list.item.php?is_deleted=1&id='+id,
                             width: 800,
                             onClosed: function() { }
                         });
@@ -72,7 +74,7 @@ if (!isLogged()) {
             // bind on colorboxed button
             $("#colorbox").on('click', ".action-restore-item", function(){
                 var id = $(this).attr('data-id');
-                $.get('/ajax/db.deleted.restore.php?id='+id).done(function(data){
+                $.get(base_url + '/ajax/db.deleted.restore.php?id='+id).done(function(data){
                     var res = (data != '') ? $.parseJSON(data) : {'status': 'null' } ;
                     res['state'] == 'done' ? reloadItemsList(backend_url, 'Данные восстановлены. Внимание, статус восстановленного объекта не определен!!! ') : $.jGrowl('Ошибка восстановления!');
                     $.colorbox.close();

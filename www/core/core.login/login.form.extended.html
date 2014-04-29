@@ -3,9 +3,9 @@
 <head>
     <title>Вход на сайт</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <script src="/core/jq/jquery-1.10.2.min.js"></script>
-    <script src="/core/js/md5.js"></script>
-    <link rel="stylesheet" href="/styles/layout.css">
+    <script src="{%basepath%}/core/jq/jquery-1.10.2.min.js"></script>
+    <script src="{%basepath%}/core/js/md5.js"></script>
+    <link rel="stylesheet" href="{%basepath%}/styles/layout.css">
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -91,7 +91,7 @@
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало">{%application_title%}</a>
+            <span title="by Karel Wintersky">©</span> <a title="В начало">{%application_title%}</a>
             |
             <h4 class="header-title">Система инвентарного учета</h4>
         </div>
@@ -107,7 +107,7 @@
     </fieldset>
 
     <div id="loginform">
-        <form action="core/core.login/login.php" method="post">
+        <form action="{%loginform_action%}" method="post">
             <dl>
                 <dt>Имя пользователя: </dt>
                 <dd>

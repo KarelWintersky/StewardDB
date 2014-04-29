@@ -32,6 +32,9 @@ if (!isLogged()) {
     <script src="core/js/core.js"></script>
     <script src="core/js/core.options.js"></script>
     <script type="text/javascript" src="core/js/core.excel.js"></script>
+    <script type="text/javascript">
+        var backend_url = '<?=$CONFIG['basepath']?>/ajax/db.list.all.php';
+    </script>
     <script src="js/list.js"></script>
 </head>
 <body>
@@ -39,7 +42,7 @@ if (!isLogged()) {
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
+            <span title="by Karel Wintersky">©</span> <a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
             |
             <h4 class="header-title">Отчет о средствах</h4>
         </div>

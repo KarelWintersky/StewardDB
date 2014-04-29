@@ -8,7 +8,7 @@ require_once('core.login.php');
 $SID = session_id();
 if(empty($SID)) session_start();
 if (!isLogged()) {
-    header('Location: /core/core.login/');
+    redirectToLogin();
 }
 
 ?>
@@ -87,7 +87,7 @@ if (!isLogged()) {
 
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="/" title="В начало"><?=$CONFIG['application_title']?></a>
+        <div id="panel-header-copyright"><a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
             <sub> by Karel Wintersky</sub>
             |
             <h4 class="header-title">Административный раздел</h4>
@@ -130,11 +130,14 @@ if (!isLogged()) {
                     </li>
                     <hr>
                     <li>
-                        <button data-href="/" class="admin-button-large action-button-is-link">Exit</button>
+                        <button data-href="<?=$CONFIG['basepath']?>/" class="admin-button-large action-button-is-link">Выход</button>
                     </li>
                 </ul>
             </td>
             <td valign="top">
+                <br><br>
+                Если вы зашли сюда случайно и не знаете, что здесь нужно делать - пожалуйста, нажмите кнопку
+                <button data-href="<?=$CONFIG['basepath']?>/" class="admin-button-small action-button-is-link">ВЫХОД</button>
             </td>
         </tr>
     </table>
