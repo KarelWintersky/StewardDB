@@ -1,6 +1,6 @@
 <?php
 
 // all content removed ;)
-// due security reasons
+// due security reasons!
 
 ?>
