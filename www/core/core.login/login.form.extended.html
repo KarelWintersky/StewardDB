@@ -4,6 +4,7 @@
     <title>Вход на сайт</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script src="{%basepath%}/core/jq/jquery-1.10.2.min.js"></script>
+    <script src="{%basepath%}/core/jq/jquery.fspoiler.js"></script>
     <script src="{%basepath%}/core/js/md5.js"></script>
     <link rel="stylesheet" href="{%basepath%}/styles/layout.css">
 
@@ -43,6 +44,8 @@
                 }
                 event.preventDefault();
             });
+            $("#help").fSpoiler({});
+
         });
     </script>
     <style type="text/css">
@@ -79,12 +82,10 @@
         fieldset legend {
             color: blue;
         }
-        #outtro {
-
-        }
         strong {
             color: red;
         }
+        fieldset#help > fieldset { border: none; }
     </style>
 </head>
 <body>
@@ -93,7 +94,7 @@
         <div id="panel-header-copyright">
             <span title="by Karel Wintersky">©</span> <a title="В начало">{%application_title%}</a>
             |
-            <h4 class="header-title">Система инвентарного учета</h4>
+            <h4 class="header-title">Система инвентарного учета для ПФРФ</h4>
         </div>
     </div>
 </header>
@@ -101,9 +102,11 @@
 <div id="main-wrapper">
     <fieldset id="intro">
         <legend>Здравствуйте!</legend>
-        Для начала работы с базой вам следует ввести имя пользователя и пароль. <br>
+        Для начала работы с базой вам следует ввести имя пользователя и пароль. <br/>
         Для Приморского района Санкт-Петербурга ваше имя пользователя выглядит: <strong>spb.primor.xx</strong> , где xx - ваши инициалы.<br>
-        Скорее всего, ваше имя пользователя <strong>spb.primor</strong><br>
+        Скорее всего, ваше имя пользователя <strong>spb.primor</strong><br/>
+        <br/>
+        Пароль для пользователя <strong>spb.primor</strong> -- leningrad.
     </fieldset>
 
     <div id="loginform">
@@ -124,8 +127,11 @@
             </dl>
         </form>
     </div>
-    <fieldset>
+    <fieldset id="help">
         <legend>Инструкция по эксплуатации</legend>
+        <fieldset>
+            Войдите в систему, используя логин <strong>spb.primor</strong> и пароль <strong>leningrad</strong>.
+        </fieldset>
 
     </fieldset>
 </div>

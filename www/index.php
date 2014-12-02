@@ -23,7 +23,6 @@ if (!isLogged()) {
     <script src="core/js/html5shiv.js"></script>
     <![endif]-->
     <script type="text/javascript" src="core/jq/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="core/jq/jquery.hotkeys.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#actor-logout').on('click', function(){

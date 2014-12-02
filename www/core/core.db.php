@@ -1,5 +1,5 @@
 <?php
-require_once('core.config.php');
+require_once('config/core.config.php');
 
 function ConnectDB()
 {
@@ -56,86 +56,66 @@ function throw_ex($er){
     throw new Exception($er);
 }
 
-/* Backup MySQL Tables*/
+/* backup the db OR just a table */
+function get_backup_tables($host, $user, $pass, $name, $tables = '*')
+{
 
-function backup_tables($file, $host, $user, $pass, $name){
     $link = mysql_connect($host, $user, $pass);
-    mysql_select_db($name, $link);
-    mysql_query("SET NAMES utf8", $link);
+    mysql_select_db($name,$link);
 
-    file_put_contents($file, '');
-
-    //получение списка таблиц
-    $tables = array();
-    $result = mysql_query('SHOW TABLES;', $link);
-    while($row = mysql_fetch_row($result)){
-        $tables[] = $row[0];
-    }
-
-    //обработка таблиц
-    if(count($tables)>0){
-        foreach($tables as $table){
-            backup_table_structure($file, $table, $link);
-            backup_table_data($file, $table, $link);
+    //get all of the tables
+    if($tables == '*')
+    {
+        $tables = array();
+        $result = mysql_query('SHOW TABLES');
+        while($row = mysql_fetch_row($result))
+        {
+            $tables[] = $row[0];
         }
     }
-}
+    else
+    {
+        $tables = is_array($tables) ? $tables : explode(',',$tables);
+    }
+    $return = '';
 
-function backup_table_structure($file, $table, $link){
-    //получение и сохранение структуры таблицы
-    $content = 'DROP TABLE IF EXISTS `'.$table."`;\n\n";
-    $result = mysql_fetch_row(mysql_query('SHOW CREATE TABLE `'.$table.'`;', $link));
-    $content .= $result[1].";\n\n";
-    file_put_contents($file, $content, FILE_APPEND);
-}
+    //cycle through
+    foreach($tables as $table)
+    {
+        $result = mysql_query('SELECT * FROM '.$table);
+        $num_fields = mysql_num_fields($result);
 
-function backup_table_data($file, $table, $link){
-    //получение и сохранение данных таблицы
-    $result = mysql_fetch_row(mysql_query('SELECT COUNT(*) FROM `'.$table.'`;', $link));
-    $count = $result[0];
-    $delta = 500;
+        $return .= 'DROP TABLE '.$table.';';
+        $row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
+        $return .= "\n\n".$row2[1].";\n\n";
 
-    //если данные существуют
-    if($count>0){
-        //определяем не числовые поля
-        $not_num = array();
-        $result = mysql_query('SHOW COLUMNS FROM `'.$table.'`;', $link);
-        $start = 0;
-        while($row = mysql_fetch_row($result)){
-            if (!preg_match("/^(tinyint|smallint|mediumint|bigint|int|float|double|real|decimal|numeric|year)/", $row[1])) {
-                $not_num[$start] = 1;
-            }
-            $start++;
-        }
-        //начинаем производить выборки данных
-        $start = 0;
-        while($count>0){
-            $result = mysql_query('SELECT * FROM `'.$table.'` LIMIT '.$start.', '.$delta.';', $link);
-            $content = 'INSERT INTO `'.$table.'` VALUES ';
-            $first = true;
-            while($row = mysql_fetch_row($result)){
-                $content .= $first ? "\n(" : ",\n(";
-                $first2 = true;
-                foreach($row as $index=>$field){
-                    if(isset($not_num[$index])){
-                        $field = addslashes($field);
-                        // $field = ereg_replace("\n", "\\n", $field);
-                        $field = str_replace("\n", "\\n", $field);
-                        $content .= !$first2 ? (',"'.$field.'"') : ('"'.$field.'"');
-                    }else{
-                        $content .= !$first2 ? (','.$field) : $field;
-                    }
-                    $first2 = false;
+        for ($i = 0; $i < $num_fields; $i++)
+        {
+            while($row = mysql_fetch_row($result))
+            {
+                $return.= 'INSERT INTO '.$table.' VALUES(';
+                for($j=0; $j<$num_fields; $j++)
+                {
+                    $row[$j] = addslashes($row[$j]);
+                    $row[$j] = str_replace("\n","\\n",$row[$j]);
+                    if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
+                    if ($j<($num_fields-1)) { $return.= ','; }
                 }
-                $content .= ')';
-                $first = false;
+                $return.= ");\n";
             }
-            //сохраняем результаты выборки
-            file_put_contents($file, $content.";\n\n", FILE_APPEND);
-            $count -= $delta;
-            $start += $delta;
         }
+        $return.="\n\n\n";
     }
+    return $return;
+
+    //save file
+    /*
+    $filename = 'db-backup-'.time().'-'.(md5(implode(',',$tables))).'.sql';
+    $handle = fopen($filename, 'w+');
+    fwrite($handle,$return);
+    fclose($handle);
+    return $filename;
+    */
 }
 
 

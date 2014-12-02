@@ -12,18 +12,18 @@ if (!isLogged()) {
 $t = time();
 $fname = "sql_dump_".$t;
 $path = "../_backup/"; // $CONFIG['basepath']
-// $file = .$fname.$fext;
 
-backup_tables($path.$fname.".sql", $CONFIG['hostname'], $CONFIG['username'], $CONFIG['password'], $CONFIG['database']);
+$backup = get_backup_tables($CONFIG['hostname'], $CONFIG['username'], $CONFIG['password'], $CONFIG['database']);
 
+$name = $path.$fname;
 if (function_exists('gzcompress')) {
-    $gz = gzopen($path.$fname.".gz", "wb9");
-    gzwrite($gz, file_get_contents($path.$fname.".sql"));
+    $name .= ".gz";
+    $gz = gzopen($name, "wb9");
+    gzwrite($gz, $backup);
     gzclose($gz);
-    unlink($path.$fname.".sql");
-    $name = $fname.".gz";
 } else {
     $name = $fname.".sql";
+    file_put_contents($name, $backup);
 }
 
 
