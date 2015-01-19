@@ -34,9 +34,9 @@ if (true) {
         case 'insert':
         {
             $q = array(
-                'room_name' => trim(mysql_escape_string($_GET['room_name'])),
-                'room_group' => trim(mysql_escape_string($_GET['room_group'])),
-                'room_comment' => mysql_escape_string($_GET['room_comment']),
+                'room_name' => trim(mysql_real_escape_string($_GET['room_name'])),
+                'room_group' => trim(mysql_real_escape_string($_GET['room_group'])),
+                'room_comment' => mysql_real_escape_string($_GET['room_comment']),
             );
             $qstr = MakeInsert($q, $reference);
             $res = mysql_query($qstr, $link) or Die("Unable to insert data to DB!".$qstr);
@@ -51,9 +51,9 @@ if (true) {
         {
             $id = $_GET['id'];
             $q = array(
-                'room_name' => trim(mysql_escape_string($_GET['room_name'])),
-                'room_group' => trim(mysql_escape_string($_GET['room_group'])),
-                'room_comment' => mysql_escape_string($_GET['room_comment']),
+                'room_name' => trim(mysql_real_escape_string($_GET['room_name'])),
+                'room_group' => trim(mysql_real_escape_string($_GET['room_group'])),
+                'room_comment' => mysql_real_escape_string($_GET['room_comment']),
             );
 
             $qstr = MakeUpdate($q, $reference, "WHERE id=$id");
@@ -67,7 +67,8 @@ if (true) {
         case 'remove':
         {
             $id = $_GET['id'];
-            $q = "DELETE FROM $reference WHERE (id=$id)";
+            $reference = getTablePrefix() . $reference;
+            $q = "DELETE FROM {$reference} WHERE (id={$id})";
             if ($r = mysql_query($q)) {
                 // запрос удаление успешен
                 $result["error"] = 0;
@@ -84,7 +85,8 @@ if (true) {
         case 'load':
         {
             $id = $_GET['id'];
-            $query = "SELECT * FROM $reference WHERE id=$id";
+            $reference = getTablePrefix() . $reference;
+            $query = "SELECT * FROM {$reference} WHERE id={$id}";
             $res = mysql_query($query) or die("Невозможно получить содержимое справочника! ".$query);
             $ref_numrows = mysql_num_rows($res);
 
@@ -101,7 +103,8 @@ if (true) {
         } // case 'load'
         case 'list':
         {
-            $query = "SELECT * FROM rooms ORDER BY room_group, room_name";
+            $reference = getTablePrefix() . $reference;
+            $query = "SELECT * FROM {$reference} ORDER BY room_group, room_name";
             $res = mysql_query($query) or die("mysql_query_error: ".$query);
 
             $ref_numrows = @mysql_num_rows($res) ;

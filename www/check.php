@@ -93,7 +93,7 @@ if (!isLogged()) {
                 <dt>Название по описи:</dt>
                 <dd>
                     <input type="text" name="a_inv_mytitle" size="60" class="input">
-                    <button id="actor-title-prediction" type="button">Предсказать!</button>
+                    <button id="actor-title-prediction" type="button">Предсказать название в базе!</button>
                     <button id="actor-title-copy-from-db" type="button">Скопировать название из базы</button>
                 </dd>
                 <dt>Название по базе:</dt>

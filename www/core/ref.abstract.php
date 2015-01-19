@@ -51,9 +51,9 @@ WHERE TABLE_NAME = '{$reference}'";
         case 'insert':
         {
             $q = array(
-                'data_int' => mysql_escape_string($_GET['data_int']),
-                'data_str' => mysql_escape_string($_GET['data_str']),
-                'data_comment' => mysql_escape_string($_GET['data_comment']),
+                'data_int' => mysql_real_escape_string(trim($_GET['data_int'])),
+                'data_str' => mysql_real_escape_string(trim($_GET['data_str'])),
+                'data_comment' => mysql_real_escape_string(trim($_GET['data_comment'])),
             );
             $qstr = MakeInsert($q, $reference);
             $res = mysql_query($qstr, $link) or Die("Unable to insert data to DB!".$qstr);
@@ -68,9 +68,9 @@ WHERE TABLE_NAME = '{$reference}'";
         {
             $id = $_GET['id'];
             $q = array(
-                'data_int' => mysql_escape_string($_GET['data_int']),
-                'data_str' => mysql_escape_string($_GET['data_str']),
-                'data_comment' => mysql_escape_string($_GET['data_comment']),
+                'data_int' => mysql_real_escape_string(trim($_GET['data_int'])),
+                'data_str' => mysql_real_escape_string(trim($_GET['data_str'])),
+                'data_comment' => mysql_real_escape_string(trim($_GET['data_comment'])),
             );
 
             $qstr = MakeUpdate($q, $reference, "WHERE id=$id");
@@ -84,9 +84,11 @@ WHERE TABLE_NAME = '{$reference}'";
         case 'remove':
         {
             $id = $_GET['id'];
-            $q = "DELETE FROM $reference WHERE (id=$id)";
+            $reference = getTablePrefix() . $reference;
+
+            $q = "DELETE FROM {$reference} WHERE (id={$id})";
             if ($r = mysql_query($q)) {
-                // запрос удаление успешен
+                // запрос удаления успешен
                 $result["error"] = 0;
                 $result['message'] = 'Удаление успешно';
 
@@ -101,6 +103,8 @@ WHERE TABLE_NAME = '{$reference}'";
         case 'load':
         {
             $id = $_GET['id'];
+            $reference = getTablePrefix() . $reference;
+
             $query = "SELECT * FROM $reference WHERE id=$id";
             $res = mysql_query($query) or die("Невозможно получить содержимое справочника! ".$query);
             $ref_numrows = mysql_num_rows($res);
@@ -130,7 +134,8 @@ WHERE TABLE_NAME = '{$reference}'";
             }
 
             $return = '';
-            $r_data = mysql_query("SELECT * FROM $reference");
+            $reference = getTablePrefix() . $reference;
+            $r_data = mysql_query("SELECT * FROM {$reference}");
 
 
             if (@mysql_num_rows($r_data) > 0)
@@ -171,6 +176,7 @@ ADV_TABLE_TR;
         }
         case 'list':
         {
+            $reference = getTablePrefix() . $reference;
             $query = "SELECT * FROM $reference";
             $res = mysql_query($query) or die("mysql_query_error: ".$query);
 

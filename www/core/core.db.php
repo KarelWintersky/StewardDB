@@ -21,9 +21,18 @@ function isConnectedDB()
     return $CONFIG['flag_dbconnected'];
 }
 
+function getTablePrefix()
+{
+    global $CONFIG;
+    return $CONFIG['tableprefix'];
+}
+
 function MakeInsert($arr, $table, $where="")
 {
-    $str = "INSERT INTO $table ";
+    $table_prefix = getTablePrefix();
+    $real_table = (strpos( $table , $table_prefix) == false ) ? $table_prefix.$table : $table;
+
+    $str = "INSERT INTO {$real_table} ";
 
     $keys = "(";
     $vals = "(";
@@ -35,9 +44,13 @@ function MakeInsert($arr, $table, $where="")
     return $str;
 }
 
-function MakeUpdate($arr,$table,$where="")
+function MakeUpdate($arr, $table, $where="")
 {
-    $str = "UPDATE $table SET ";
+    $table_prefix = getTablePrefix();
+    $real_table = (strpos( $table , $table_prefix) == false ) ? $table_prefix.$table : $table;
+
+    $str = "UPDATE {$real_table} SET ";
+
     foreach ($arr as $key=>$val)
     {
         $str.= $key."='".$val."', ";
@@ -49,7 +62,8 @@ function MakeUpdate($arr,$table,$where="")
 
 function DBIsTableExists($table)
 {
-    return (mysql_query("SELECT 1 FROM $table WHERE 0")) ? true : false;
+    $real_table = getTablePrefix() . $table;
+    return (mysql_query("SELECT 1 FROM {$real_table} WHERE 0")) ? true : false;
 }
 
 function throw_ex($er){

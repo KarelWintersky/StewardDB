@@ -66,10 +66,13 @@ function retVal($value, $default=0)
 /*
 строит универсальный запрос на основе GET'а (в лист)
 */
-function getQuery($get, $table='')
+function getQuery($get, $a_table='')
 {
     global $CONFIG;
-    if ($table == '') $table = $CONFIG['main_data_table'];
+    $t_prefix = getTablePrefix();
+    $table = (strpos( $a_table , $t_prefix) == false ) ? $t_prefix.$a_table : $a_table;
+
+    // $table = ($a_table == '') ? $CONFIG['main_data_table'] : $a_table;
 
     $select = "
     SELECT
@@ -79,9 +82,9 @@ function getQuery($get, $table='')
 , {$table}.dbtitle AS i_dt
 , DATE_FORMAT({$table}.date_income, '%d.%m.%Y') AS i_di
 , {$table}.comment AS i_comment
-, ref_owners.data_str AS r_owner
-, ref_status.data_str AS r_status
-, rooms.room_name AS r_room
+, {$t_prefix}ref_owners.data_str AS r_owner
+, {$t_prefix}ref_status.data_str AS r_status
+, {$t_prefix}rooms.room_name AS r_room
 , {$table}.cost_float AS i_cost
 , {$table}.owner AS i_owner
 , {$table}.room AS i_room
@@ -100,9 +103,9 @@ AND rooms.id = {$table}.room "; */
     // Правильный запрос с join'ами
     $from = " FROM
     {$table}
-    LEFT JOIN ref_status    ON {$table}.status = ref_status.id
-    LEFT JOIN rooms         ON {$table}.room = rooms.id
-    LEFT JOIN ref_owners    ON {$table}.owner = ref_owners.id
+    LEFT JOIN {$t_prefix}ref_status    ON {$table}.status = {$t_prefix}ref_status.id
+    LEFT JOIN {$t_prefix}rooms         ON {$table}.room = {$t_prefix}rooms.id
+    LEFT JOIN {$t_prefix}ref_owners    ON {$table}.owner = {$t_prefix}ref_owners.id
     ";
 
     $where = " WHERE ";
@@ -114,16 +117,16 @@ AND rooms.id = {$table}.room "; */
     $subfamily = retVal($get['subfamily']);
 
     if ($family != 0) {
-        $select .= " , ref_family.data_str AS r_family ";
-        $where .= " AND ref_family.id = {$table}.family ";
+        $select .= " , {$t_prefix}ref_family.data_str AS r_family ";
+        $where .= " AND {$t_prefix}ref_family.id = {$table}.family ";
         $where .= " AND {$table}.family = {$family}";
-        $from .= " , ref_family ";
+        $from .= " , {$t_prefix}ref_family ";
 
         if ($subfamily != 0) {
-            $select .= " , ref_subfamily.data_str AS r_subfamily ";
-            $where .= " AND ref_subfamily.id = {$table}.subfamily ";
+            $select .= " , {$t_prefix}ref_subfamily.data_str AS r_subfamily ";
+            $where .= " AND {$t_prefix}ref_subfamily.id = {$table}.subfamily ";
             $where .= " AND {$table}.subfamily = {$subfamily}";
-            $from .= " , ref_subfamily ";
+            $from .= " , {$t_prefix}ref_subfamily ";
         }
     }
 
@@ -141,7 +144,8 @@ AND rooms.id = {$table}.room "; */
 
 function AR_getDataById($ref, $id)
 {
-    $q = "SELECT data_str FROM {$ref} WHERE id = {$id}";
+    $t_prefix = getTablePrefix();
+    $q = "SELECT data_str FROM {$t_prefix}{$ref} WHERE id = {$id}";
     $r = mysql_query($q);
     if (@mysql_num_rows($r) > 0) {
         $ret = mysql_fetch_assoc($r);
@@ -151,7 +155,8 @@ function AR_getDataById($ref, $id)
 
 function R_getDataById($id)
 {
-    $q = "SELECT room_name FROM rooms WHERE id = {$id}";
+    $t_prefix = getTablePrefix();
+    $q = "SELECT room_name FROM {$t_prefix}rooms WHERE id = {$id}";
     $r = mysql_query($q);
     if (@mysql_num_rows($r) > 0) {
         $ret = mysql_fetch_assoc($r);

@@ -1,7 +1,10 @@
 <?php
 require_once('../core/core.php');
 require_once('../core/core.db.php');
+
 $table = $CONFIG['main_data_table'];
+$table_prefix = $CONFIG['tableprefix'];
+$table = (strpos( $table , $table_prefix) == false ) ? $table_prefix.$table : $table;
 
 $link = ConnectDB();
 $data = array();

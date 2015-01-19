@@ -20,8 +20,9 @@ if (!empty($ref))
 {
     $ref = $_GET['ref'];
     $link = ConnectDB();
+    $real_table = getTablePrefix() . $ref;
 
-    $query = " SELECT * FROM $ref {$group}";
+    $query = " SELECT * FROM {$real_table} {$group}";
     $result = mysql_query($query) or die($j_error);
     $ref_numrows = @mysql_num_rows($result) ;
 

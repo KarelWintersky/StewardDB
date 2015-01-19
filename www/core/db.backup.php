@@ -13,6 +13,9 @@ $t = time();
 $fname = "sql_dump_".$t;
 $path = "../_backup/"; // $CONFIG['basepath']
 
+global $CONFIG;
+
+
 $backup = get_backup_tables($CONFIG['hostname'], $CONFIG['username'], $CONFIG['password'], $CONFIG['database']);
 
 $name = $path.$fname;

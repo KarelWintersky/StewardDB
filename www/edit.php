@@ -98,7 +98,7 @@ CloseDB($link);
                 <dt>Название по описи:</dt>
                 <dd>
                     <input type="text" name="a_inv_mytitle" size="60" value="<?=$item['i_mt']?>">
-                    <button id="actor-title-prediction" type="button">Предсказать!</button>
+                    <button id="actor-title-prediction" type="button">Предсказать название по базе!</button>
                 </dd>
                 <dt>Название по базе:</dt>
                 <dd>
@@ -133,6 +133,7 @@ CloseDB($link);
                 <dd>
                     <textarea name="a_inv_comment" cols="60" rows="3"><?=$item['i_comment']?></textarea>
                 </dd>
+
                 <dt>
                     <button type="button" style="float:left" id="action-delete-item">F8: Удалить </button>
                 </dt>

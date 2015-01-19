@@ -11,7 +11,7 @@ $query = getQuery($_GET, $table);
 
 $link = ConnectDB();
 
-$qr = mysql_query($query) or die('error: '.$query);
+$qr = mysql_query($query) or die('db.list.all error: '.$query);
 $nr = @mysql_num_rows($qr);
 
 $rows = array();

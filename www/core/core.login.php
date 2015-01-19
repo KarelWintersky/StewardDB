@@ -4,6 +4,7 @@ function redirectToLogin()
 {
     global $CONFIG;
     header('Location: '.$CONFIG['basepath'].'/entrance.php');
+    die();
 }
 
 function isLogged()
@@ -21,14 +22,18 @@ function isLogged()
 function DBLoginCheck($login, $password)
 {
     global $CONFIG;
+    $real_table = $CONFIG['tableprefix'] . 'users';
     // возвращает массив с полями "error" и "message"
     $link = ConnectDB();
     // логин мы передали точно совершенно, мы это проверили в скрипте, а пароль может быть и пуст
     // а) логин не существует
     // б) логин существует, пароль неверен
     // в) логин существует, пароль верен
+
+
     $userlogin = mysql_real_escape_string(mb_strtolower($login));
-    $q_login = "SELECT password, permissions , id FROM users WHERE login = '$userlogin'";
+
+    $q_login = "SELECT password, permissions , id FROM {$real_table} WHERE login = '$userlogin'";
     if (!$r_login = mysql_query($q_login)) { /* error catch */ }
 
     if (mysql_num_rows($r_login)==1) {
