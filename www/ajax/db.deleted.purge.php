@@ -1,11 +1,7 @@
 <?php
-require_once('../core/core.php');
-require_once('../core/core.db.php');
-$table = $CONFIG['main_data_table'];
+require_once '../core/__required.php';
 
-$id = mysql_escape_string($_GET['id']);
-
-$link = ConnectDB();
+$id = mysqli_escape_string($mysqli, $_GET['id']);
 
 $jresult = array(
     'state' => 'done',
@@ -13,16 +9,13 @@ $jresult = array(
 );
 
 try {
-    $q = "DELETE FROM {$table} WHERE is_deleted = 1";
-    $r = mysql_query($q) or throw_ex(mysql_error());
+    $q = "DELETE FROM {$main_data_table} WHERE is_deleted = 1";
+    $r = mysqli_query($mysqli, $q) or die(mysqli_error($mysqli));
 } catch (exception $e) {
     $jresult = array(
         'state' => 'error',
-        'error' => mysql_error(),
+        'error' => mysqli_error($mysqli),
     );
 }
 
-CloseDB($link);
 print(json_encode($jresult));
-
-?>

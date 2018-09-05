@@ -1,18 +1,11 @@
 <?php
-require_once('core/core.php');
-require_once('core/core.db.php');
-require_once('core/core.kwt.php');
-require_once('core/core.login.php');
-
-global $CONFIG;
-
-$link = ConnectDB();
+require_once 'core/__required.php';
 
 $SID = session_id();
 if(empty($SID)) session_start();
 
 if (isLogged()) {
-    Redirect($CONFIG['basepath'].'/index.php');
+    Redirect( Config::get('basepath').'/index.php');
 } else {
     // скрипт или обработка входа
     if (isAjaxCall()) {
@@ -38,7 +31,7 @@ if (isLogged()) {
                 $_SESSION['u_permissions']  = $return['permissions'];
                 setcookie('u_libdb_logged',     $return['id'], 0, '/');
                 setcookie('u_libdb_permissions',    $return['permissions'], 0, '/');
-                Redirect($CONFIG['basepath'].'/index.php');
+                Redirect(Config::get('basepath').'/index.php');
             } else {
                 // странно, почему же неверный логин или пароль, хотя мы его проверили аяксом? взлом?
                 Redirect($_SERVER['PHP_SELF']);
@@ -47,12 +40,11 @@ if (isLogged()) {
             // отрисовка формы
             $tpl = new kwt('core/core.login/login.form.extended.html');
             $tpl -> override(array(
-                'application_title' => $CONFIG['application_title'],
+                'application_title' => Config::get('application_title'),
                 'loginform_action'  => 'core/core.login/login.php',
-                'basepath'          => $CONFIG['basepath']
+                'basepath'          => Config::get('basepath')
             ));
             $tpl -> out();
         }
     }
 }
-?>

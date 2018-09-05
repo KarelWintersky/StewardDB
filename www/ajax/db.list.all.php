@@ -1,36 +1,30 @@
 <?php
-require_once('../core/core.php');
-require_once('../core/core.db.php');
-$table = $CONFIG['main_data_table'];
+require_once '../core/__required.php';
 
-$get_total_cost = retVal($_GET['get_total_cost'], 0);
+$get_total_cost = $_GET['get_total_cost'] ?? 0;
 
-if ( $_GET['status'] == 2 ) $get_total_cost = 1;
+$get_total_cost = (array_key_exists('status', $_GET) && $_GET['status'] == 2) ? 1 : $get_total_cost;
 
-$query = getQuery($_GET, $table);
+$query = getQuery($_GET, $main_data_table);
 
-$link = ConnectDB();
-
-$qr = mysql_query($query) or die('db.list.all error: '.$query);
-$nr = @mysql_num_rows($qr);
+$qr = mysqli_query($mysqli, $query) or die('db.list.all error: '.$query);
+$nr = mysqli_num_rows($qr);
 
 $rows = array();
 
 $total_cost = 0; $total_loaded = 0;
 
 if ($nr > 0) {
-    while ($r = mysql_fetch_assoc($qr)) {
+    while ($r = mysqli_fetch_assoc($qr)) {
         $r['i_title'] = ($r['i_dt'] != '') ? $r['i_dt'] : $r['i_mt'];
         $rows [] = $r;
         $total_cost += ($get_total_cost != 0) ? 1*$r['i_cost'] : 0;
         $total_loaded++;
     }
 }
-/* stripcslashes($row['i_comment']) */
-CloseDB($link);
 ?>
 <!--
-[<?=$nr?>] : <?=$query?>
+[<?php echo $nr; ?>] : <?php echo $query; ?>
  -->
 <style type="text/css">
     .table_items_list {
@@ -60,7 +54,7 @@ CloseDB($link);
 <?php
     if ($nr > 0) {
         ?>
-        <div>Всего загружено: <?=$total_loaded?></div>
+        <div>Всего загружено: <?php echo $total_loaded; ?></div>
         <table border="1" class="table_items_list" id="exportable">
             <tr>
                 <th>
@@ -96,30 +90,30 @@ CloseDB($link);
 
             <tr>
                 <td class="td-center">
-                    <span><?=$row['i_id']?> </span>
+                    <span><?php echo $row['i_id']; ?> </span>
                 </td>
                 <td class="td-center">
-                    &nbsp;<?=$row['i_code']?>&nbsp;
+                    &nbsp;<?php echo $row['i_code']; ?>&nbsp;
                 </td>
-                <td class="td-hover-link-like action-show-extended-info-for-id" data-id="<?=$row['i_id']?>">
+                <td class="td-hover-link-like action-show-extended-info-for-id" data-id="<?php echo $row['i_id']; ?>">
                     <span class="link-like" title="Редактировать!">
-                        <?=$row['i_title']?>
+                        <?php echo $row['i_title']; ?>
                     </span>
                 </td>
                 <td class="td-center">
-                    <?=$row['i_di']?>
+                    <?php echo $row['i_di']; ?>
                 </td>
                 <td class="td-center">
-                    <?=$row['i_cost']?>
+                    <?php echo $row['i_cost']; ?>
                 </td>
                 <td class="td-small">
-                    <?=$row['r_owner']?>
+                    <?php echo $row['r_owner']; ?>
                 </td>
                 <td class="td-small">
-                    <?=$row['r_status']?>
+                    <?php echo $row['r_status']; ?>
                 </td>
                 <td>
-                    <?=$row['r_room']?>
+                    <?php echo $row['r_room']; ?>
                 </td>
             </tr>
 <?php }

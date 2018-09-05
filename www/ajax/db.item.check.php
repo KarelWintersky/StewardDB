@@ -1,27 +1,24 @@
 <?php
-require_once('../core/core.php');
-require_once('../core/core.db.php');
-$table = $CONFIG['main_data_table'];
+require_once '../core/__required.php';
 
-$inv_code = IsSet($_GET['inv_code']) ? $_GET['inv_code'] : -1;
+$inv_code = $_GET['inv_code'] ?? -1;
 
-$ic = mysql_escape_string($_GET['inv_code']);
+$ic = mysqli_escape_string($mysqli, $_GET['inv_code']);
 
-$link = ConnectDB();
 $data = array();
 
-$q = "SELECT * from {$table} where inv_code LIKE '%{$ic}%'";
+$q = "SELECT * from {$main_data_table} where inv_code LIKE '%{$ic}%'";
 
 if ($inv_code != -1 )
 {
 
-    $r = mysql_query($q);
-    $nr = @mysql_num_rows($r);
+    $r = mysqli_query($mysqli, $q);
+    $nr = @mysqli_num_rows($r);
     $data['count'] = $nr;
     $data['query'] = $q;
 
     if ($nr == 1) {
-        $data['data'] = mysql_fetch_assoc($r);
+        $data['data'] = mysqli_fetch_assoc($r);
         $data['state'] = 'found';
     } else if ( $nr == 0 ) {
         $data['state'] = 'notfound';
@@ -35,6 +32,4 @@ if ($inv_code != -1 )
     $data['message'] = $q;
 }
 
-CloseDB($link);
 print(json_encode($data));
-?>

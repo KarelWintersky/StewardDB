@@ -1,7 +1,5 @@
 <?php
-require_once('../config/core.config.php');
-require_once('../core.php');
-
+require_once '../__required.php';
 
 $_SESSION['u_id'] = -1;
 $_SESSION['u_permissions'] = -1;
@@ -18,5 +16,4 @@ unset($_SESSION['u_id']);
 
 unset($_SESSION['u_permissions']);
 
-Redirect($CONFIG['basepath'].'/');
-?>
+Redirect(Config::get('basepath') .'/');

@@ -1,9 +1,5 @@
 <?php
-require_once('core.php');
-require_once('core.db.php');
-require_once('core.kwt.php');
-require_once('core.login.php');
-
+require_once '__required.php';
 
 $SID = session_id();
 if(empty($SID)) session_start();
@@ -87,7 +83,7 @@ if (!isLogged()) {
 
 <header id="panel-header">
     <div id="panel-header-inner">
-        <div id="panel-header-copyright"><a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
+        <span title="by Karel Wintersky">©</span> <a href="<?php echo Config::get('basepath'); ?>/" title="В начало"><?php echo Config::get('application_title'); ?></a>
             <sub> by Karel Wintersky</sub>
             |
             <h4 class="header-title">Административный раздел</h4>
@@ -130,14 +126,14 @@ if (!isLogged()) {
                     </li>
                     <hr>
                     <li>
-                        <button data-href="<?=$CONFIG['basepath']?>/" class="admin-button-large action-button-is-link">Выход</button>
+                        <button data-href="<?php echo Config::get('basepath'); ?>/" class="admin-button-large action-button-is-link">Выход</button>
                     </li>
                 </ul>
             </td>
             <td valign="top">
                 <br><br>
                 Если вы зашли сюда случайно и не знаете, что здесь нужно делать - пожалуйста, нажмите кнопку
-                <button data-href="<?=$CONFIG['basepath']?>/" class="admin-button-small action-button-is-link">ВЫХОД</button>
+                <button data-href="<?php echo Config::get('basepath'); ?>/" class="admin-button-small action-button-is-link">ВЫХОД</button>
             </td>
         </tr>
     </table>

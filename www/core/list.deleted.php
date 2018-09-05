@@ -1,9 +1,5 @@
 <?php
-require_once('core.php');
-require_once('core.db.php');
-require_once('core.kwt.php');
-require_once('core.login.php');
-
+require_once '__required.php';
 
 $SID = session_id();
 if(empty($SID)) session_start();
@@ -40,7 +36,7 @@ if (!isLogged()) {
         }
 
         $(document).ready(function () {
-            var base_url = '<?=$CONFIG['basepath']?>';
+            var base_url = '<?php echo Config::get('basepath'); ?>';
 
             var backend_url = base_url + '/ajax/db.deleted.list.php?is_deleted=1';
             $.ajaxSetup({cache: false, async: false });
@@ -104,7 +100,7 @@ if (!isLogged()) {
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a title="В начало"><?=$CONFIG['application_title']?></a>
+            <span title="by Karel Wintersky">©</span> <a title="В начало"><?php echo Config::get('application_title'); ?></a>
             |
             <h4 class="header-title">Просмотр удаленных объектов</h4>
         </div>

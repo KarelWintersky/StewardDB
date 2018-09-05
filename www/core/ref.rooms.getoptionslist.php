@@ -1,6 +1,5 @@
 <?php
-require_once('core.php');
-require_once('core.db.php');
+require_once '__required.php';
 
 // отдает JSON объект для построения selector/options list на основе абстрактного справочника
 /* формирует SELECTOR/OPTIONS list с текущим элементом равным [currentid]
@@ -18,18 +17,13 @@ data format:
 }
  */
 
-$ref = $_GET['ref'];
-
-$link = ConnectDB();
-
 $real_table = getTablePrefix() . 'rooms';
 
-// $query = "SELECT * FROM rooms ORDER BY room_group, room_name";
-$query = "SELECT id, room_name, room_group FROM {$real_table} ORDER BY room_group, 0+ LEFT(room_name,LOCATE(' ',room_name) - 1), room_name";
+$query = "SELECT * FROM {$real_table} ORDER BY room_group, 0+ LEFT(room_name,LOCATE(' ',room_name) - 1), room_name";
 
-$result = mysql_query($query) or die($query);
+$result = mysqli_query($mysqli, $query) or die($query);
 
-$ref_numrows = @mysql_num_rows($result) ;
+$ref_numrows = @mysqli_num_rows($result) ;
 
 if ($ref_numrows>0)
 {
@@ -38,7 +32,7 @@ if ($ref_numrows>0)
     $data['count'] = $ref_numrows;
     $i = 1;
     $group = '';
-    while ($row = mysql_fetch_assoc($result))
+    while ($row = mysqli_fetch_assoc($result))
     {
         if ($group != $row['room_group']) {
             // send new optiongroup
@@ -62,8 +56,5 @@ if ($ref_numrows>0)
     $data['count'] = 0;
 }
 
-CloseDB($link);
-
-
 print(json_encode($data));
-?>
+

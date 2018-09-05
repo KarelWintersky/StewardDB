@@ -1,9 +1,5 @@
 <?php
-require_once('core/core.php');
-require_once('core/core.db.php');
-require_once('core/core.kwt.php');
-require_once('core/core.login.php');
-
+require_once 'core/__required.php';
 
 $SID = session_id();
 if(empty($SID)) session_start();
@@ -36,7 +32,7 @@ if (!isLogged()) {
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
+            <span title="by Karel Wintersky">©</span> <a href="<?php echo Config::get('basepath'); ?>/" title="В начало"><?php echo Config::get('application_title');?></a>
             |
             <h4 class="header-title">Добавление и проверка</h4>
         </div>
