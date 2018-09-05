@@ -17,7 +17,6 @@ if ($nr == 1) {
     $row = mysqli_fetch_assoc($qr);
 }
 
-CloseDB($mysqli);
 ?>
 <style>
     #popup-db-list-item-info dl {

@@ -11,12 +11,11 @@ if (!isLogged()) {
 }
 $t = time();
 $fname = "sql_dump_".$t;
-$path = "../_backup/"; // $CONFIG['basepath']
+$path = "../_backup/"; // Config::get('basepath');
 
-global $CONFIG;
-
-
-$backup = get_backup_tables($CONFIG['hostname'], $CONFIG['username'], $CONFIG['password'], $CONFIG['database']);
+$backup = get_backup_tables(Config::get('database/hostname'), Config::get('database/username'),
+    Config::get('database/password'), Config::get('database/database')
+);
 
 $name = $path.$fname;
 if (function_exists('gzcompress')) {
@@ -45,8 +44,8 @@ if (function_exists('gzcompress')) {
     <body>
     Резервная копия базы сделана успешно.<br>
     Дата создания копии: <?php echo date("d/m/Y H:i:s (P)", $t )?> <br>
-    Файл с резервной копией: <a href="<?=$CONFIG['basepath']?>/_backup/<?=$name?>"><?=$name?></a><br>
-    <button onClick="window.location.href='<?=$CONFIG['basepath']?>/core/'">Назад</button>
+    Файл с резервной копией: <a href="<?php echo Config::get('basepath'); ?>/_backup/<?=$name?>"><?=$name?></a><br>
+    <button onClick="window.location.href='<?php echo Config::get('basepath'); ?>/core/'">Назад</button>
     </body>
 </html>
 

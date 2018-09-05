@@ -22,7 +22,6 @@ if ($nr > 0) {
         $total_loaded++;
     }
 }
-/* stripcslashes($row['i_comment']) */
 ?>
 <!--
 [<?php echo $nr; ?>] : <?php echo $query; ?>

@@ -19,7 +19,6 @@ if (mysqli_num_rows($qr) == 1) {
     $item = mysqli_fetch_assoc($qr);
 }
 
-CloseDB($mysqli);
 ?>
 <!DOCTYPE html>
 <html>

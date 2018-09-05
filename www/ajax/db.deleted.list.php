@@ -1,9 +1,7 @@
 <?php
 require_once '../core/__required.php';
 
-$table = Config::get('main_data_table');
-
-$query = getQuery($_GET, $table);
+$query = getQuery($_GET, $main_data_table);
 
 $qr = mysqli_query($mysqli, $query) or die('error: '.$query);
 $nr = @mysqli_num_rows($qr);

@@ -121,8 +121,7 @@ function get_backup_tables($host, $user, $pass, $name, $tables = '*')
 
 function redirectToLogin()
 {
-    global $CONFIG;
-    header('Location: '.$CONFIG['basepath'].'/entrance.php');
+    header('Location: '.Config::get('basepath').'/entrance.php');
     die();
 }
 

@@ -22,7 +22,7 @@ if (!isLogged()) {
     <script type="text/javascript">
         $(document).ready(function(){
             $('#actor-logout').on('click', function(){
-                document.location.href = '<?=$CONFIG['basepath']?>/core/core.login/logout.php';
+                document.location.href = '<?php echo Config::get('basepath'); ?>/core/core.login/logout.php';
             });
         });
     </script>

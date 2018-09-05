@@ -463,7 +463,7 @@ TABLE_IS_EMPTY;
             });
 
             $("#actor-exit").on('click',function(event){
-                location.href = '<?=$CONFIG['basepath']?>/core/';
+                location.href = '<? echo Config::get('basepath'); ?>/core/';
             });
             //@hint:
             // center all buttons in 'control' TD at output table

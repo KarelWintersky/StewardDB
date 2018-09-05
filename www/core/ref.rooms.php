@@ -357,7 +357,7 @@ TABLE_IS_EMPTY;
             });
 
             $("#actor-exit").on('click',function(event){
-                location.href = '<?=$CONFIG['basepath']?>/core/';
+                location.href = '<?php echo Config::get('basepath'); ?>/core/';
             });
 
         });
