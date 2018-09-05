@@ -110,9 +110,6 @@ function getCurrentDate()
 {
     var _date = new Date();
     return dateToDMY(_date);
-    // var d = _date.getDay(), m = _date.getMonth()+ 1, y = _date.getFullYear();
-    // return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-    // return (_date_day + '.' + _date_month + '.' + _date_year);
 }
 
 /* format input date to d.m.Y format */

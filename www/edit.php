@@ -1,9 +1,5 @@
 <?php
-require_once('core/core.php');
-require_once('core/core.db.php');
-require_once('core/core.kwt.php');
-require_once('core/core.login.php');
-
+require_once 'core/__required.php';
 
 $SID = session_id();
 if(empty($SID)) session_start();
@@ -11,23 +7,19 @@ if (!isLogged()) {
     redirectToLogin();
 }
 
-$table = 'export_csv';
-
-$id = retVal($_GET['id']);
+$id = $_GET['id'] ?? 0;
 $get['id'] = $id;
-$query = getQuery($get, $CONFIG['main_data_table']);
+$query = getQuery($get, $main_data_table);
 
-$link = ConnectDB();
-
-$qr = mysql_query($query) or die('error: '.$query);
+$qr = mysqli_query($mysqli, $query) or die('error: '.$query);
 
 $item = array();
 
-if (@mysql_num_rows($qr) == 1) {
-    $item = mysql_fetch_assoc($qr);
+if (mysqli_num_rows($qr) == 1) {
+    $item = mysqli_fetch_assoc($qr);
 }
 
-CloseDB($link);
+CloseDB($mysqli);
 ?>
 <!DOCTYPE html>
 <html>
@@ -61,7 +53,7 @@ CloseDB($link);
 <header id="panel-header">
     <div id="panel-header-inner">
         <div id="panel-header-copyright">
-            <span title="by Karel Wintersky">©</span> <a href="<?=$CONFIG['basepath']?>/" title="В начало"><?=$CONFIG['application_title']?></a>
+            <span title="by Karel Wintersky">©</span> <a href="<?php echo Config::get('basepath'); ?>/" title="В начало"><?php echo Config::get('application_title'); ?></a>
             |
             <h4 class="header-title">Редактирование объекта</h4>
         </div>

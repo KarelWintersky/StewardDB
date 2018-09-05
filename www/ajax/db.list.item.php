@@ -1,27 +1,23 @@
 <?php
-require_once('../core/core.php');
-require_once('../core/core.db.php');
-$table = $CONFIG['main_data_table'];
+require_once '../core/__required.php';
 
-$id = retVal($_GET['id']);
-$is_deleted = retVal($_GET['is_deleted']);
+$id = $_GET['id'] ?? 0;
+$is_deleted = $_GET['is_deleted'] ?? 0;
 
 $get['id'] = $id;
 
-$query = getQuery($_GET, $table);
+$query = getQuery($_GET, $main_data_table);
 
-$link = ConnectDB();
-
-$qr = mysql_query($query) or die('error: '.$query);
-$nr = @mysql_num_rows($qr);
+$qr = mysqli_query($mysqli, $query) or die('error: '.$query);
+$nr = @mysqli_num_rows($qr);
 
 $row = array();
 
 if ($nr == 1) {
-    $row = mysql_fetch_assoc($qr);
+    $row = mysqli_fetch_assoc($qr);
 }
 
-CloseDB($link);
+CloseDB($mysqli);
 ?>
 <style>
     #popup-db-list-item-info dl {
@@ -57,7 +53,7 @@ CloseDB($link);
     <dl>
         <dt>Внутренний №:</dt>
         <dd>
-            <input type="text" size="30" class="pdlii-input" readonly value="<?=$row['i_id']?>">
+            <input type="text" size="30" class="pdlii-input" readonly value="<?php echo $row['i_id']; ?>">
             <?php
             if ($is_deleted) echo '<span class="pdlii-warning">Объект удален!!!</span>';
             ?>
@@ -65,51 +61,51 @@ CloseDB($link);
 
         <dt>Инвентарный номер:</dt>
         <dd>
-            <input type="text" size="30" class="pdlii-input" readonly value="<?=$row['i_code']?>">
+            <input type="text" size="30" class="pdlii-input" readonly value="<?php echo $row['i_code']; ?>">
         </dd>
 
         <dt>Название по базе:</dt>
         <dd>
-            <input type="text" size="60" class="pdlii-input" readonly value="<?=$row['i_dt']?>">
+            <input type="text" size="60" class="pdlii-input" readonly value="<?php echo $row['i_dt']; ?>">
         </dd>
 
         <dt>Название по описи:</dt>
         <dd>
-            <input type="text" size="60" class="pdlii-input" readonly value="<?=$row['i_mt']?>">
+            <input type="text" size="60" class="pdlii-input" readonly value="<?php echo $row['i_mt']; ?>">
         </dd>
 
         <dt>Кабинет:</dt>
         <dd>
-            <input type="text" size="60" class="pdlii-input" readonly value="<?=$row['r_room']?>">
+            <input type="text" size="60" class="pdlii-input" readonly value="<?php echo $row['r_room']; ?>">
         </dd>
 
         <dt>Владелец:</dt>
         <dd>
-            <input type="text" size="60" class="pdlii-input" readonly value="<?=$row['r_owner']?>">
+            <input type="text" size="60" class="pdlii-input" readonly value="<?php echo $row['r_owner']; ?>">
         </dd>
 
         <dt>Статус:</dt>
         <dd>
-            <input type="text" size="60" class="pdlii-input" readonly value="<?=$row['r_status']?>">
+            <input type="text" size="60" class="pdlii-input" readonly value="<?php echo $row['r_status']; ?>">
         </dd>
 
         <dt>Дата учета:</dt>
         <dd>
-            <input type="text" size="60" class="pdlii-input" readonly value="<?=$row['i_di']?>">
+            <input type="text" size="60" class="pdlii-input" readonly value="<?php echo $row['i_di']; ?>">
         </dd>
 
         <dt>Цена:</dt>
         <dd>
-            <input type="text" size="60" class="pdlii-input" readonly value="<?=$row['i_cost']?>">
+            <input type="text" size="60" class="pdlii-input" readonly value="<?php echo $row['i_cost']; ?>">
         </dd>
 
         <dt>Комментарий:</dt>
         <dd>
-            <textarea readonly class="pdlii-input" cols="60" rows="3"><?=$row['i_comment']?></textarea>
+            <textarea readonly class="pdlii-input" cols="60" rows="3"><?php echo $row['i_comment']; ?></textarea>
         </dd>
         <dt></dt>
         <dd>
-            <button class="action-edit-by-id action-restore-item" data-id="<?=$row['i_id']?>"><span>Редактировать запись</span></button>
+            <button class="action-edit-by-id action-restore-item" data-id="<?php echo $row['i_id']; ?>"><span>Редактировать запись</span></button>
 <?php //@todo: место для потенциального бага!!!
 /*  Здесь у кнопки сразу два класса - action-edit & action-remove. Я так сделал, чтобы не плодить
 два разных файла для показа информации по предмету - один вызывается из list, другой - из list.deleted

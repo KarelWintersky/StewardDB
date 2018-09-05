@@ -35,10 +35,10 @@ if (isset($_GET['ref'])) {
             $result = array();
             $q = "SELECT column_name, column_comment FROM information_schema.COLUMNS
 WHERE TABLE_NAME = '{$reference}'";
-            $r = mysql_query($q);
-            $rn = @mysql_num_rows($r);
+            $r = mysqli_query($mysqli, $q);
+            $rn = @mysqli_num_rows($r);
             if ($rn > 0) {
-                while ($row = mysql_fetch_assoc($r)) {
+                while ($row = mysqli_fetch_assoc($r)) {
                     $result['data'][ $row['column_name'] ] = $row['column_comment'];
                 }
                 $result['state'] = 'ok';
@@ -51,9 +51,9 @@ WHERE TABLE_NAME = '{$reference}'";
         case 'insert':
         {
             $q = array(
-                'data_int' => mysql_real_escape_string(trim($_GET['data_int'])),
-                'data_str' => mysql_real_escape_string(trim($_GET['data_str'])),
-                'data_comment' => mysql_real_escape_string(trim($_GET['data_comment'])),
+                'data_int' => mysqli_real_escape_string($mysqli, trim($_GET['data_int'])),
+                'data_str' => mysqli_real_escape_string(trim($mysqli, $_GET['data_str'])),
+                'data_comment' => mysqli_real_escape_string($mysqli, trim($_GET['data_comment'])),
             );
             $qstr = MakeInsert($q, $reference);
             $res = mysql_query($qstr, $link) or Die("Unable to insert data to DB!".$qstr);
@@ -68,9 +68,9 @@ WHERE TABLE_NAME = '{$reference}'";
         {
             $id = $_GET['id'];
             $q = array(
-                'data_int' => mysql_real_escape_string(trim($_GET['data_int'])),
-                'data_str' => mysql_real_escape_string(trim($_GET['data_str'])),
-                'data_comment' => mysql_real_escape_string(trim($_GET['data_comment'])),
+                'data_int' => mysqli_real_escape_string($mysqli, trim($_GET['data_int'])),
+                'data_str' => mysqli_real_escape_string($mysqli, trim($_GET['data_str'])),
+                'data_comment' => mysqli_real_escape_string($mysqli, trim($_GET['data_comment'])),
             );
 
             $qstr = MakeUpdate($q, $reference, "WHERE id=$id");
@@ -87,7 +87,7 @@ WHERE TABLE_NAME = '{$reference}'";
             $reference = getTablePrefix() . $reference;
 
             $q = "DELETE FROM {$reference} WHERE (id={$id})";
-            if ($r = mysql_query($q)) {
+            if ($r = mysqli_query($mysqli, $q)) {
                 // запрос удаления успешен
                 $result["error"] = 0;
                 $result['message'] = 'Удаление успешно';
@@ -106,11 +106,11 @@ WHERE TABLE_NAME = '{$reference}'";
             $reference = getTablePrefix() . $reference;
 
             $query = "SELECT * FROM $reference WHERE id=$id";
-            $res = mysql_query($query) or die("Невозможно получить содержимое справочника! ".$query);
-            $ref_numrows = mysql_num_rows($res);
+            $res = mysqli_query($mysqli, $query) or die("Невозможно получить содержимое справочника! ".$query);
+            $ref_numrows = mysqli_num_rows($res);
 
             if ($ref_numrows != 0) {
-                $result['data'] = mysql_fetch_assoc($res);
+                $result['data'] = mysqli_fetch_assoc($res);
                 $result['error'] = 0;
                 $result['message'] = '';
             } else {
@@ -124,8 +124,8 @@ WHERE TABLE_NAME = '{$reference}'";
         {
             $fields = array();
             $rows = array();
-            $r_fields = mysql_query("SELECT column_name, column_comment FROM information_schema.COLUMNS WHERE TABLE_NAME = '{$reference}'");
-            while ($a_field = mysql_fetch_assoc($r_fields)) {
+            $r_fields = mysqli_query($mysqli, "SELECT column_name, column_comment FROM information_schema.COLUMNS WHERE TABLE_NAME = '{$reference}'");
+            while ($a_field = mysqli_fetch_assoc($r_fields)) {
                 $fields [ $a_field['column_name'] ] = $a_field['column_comment'];
             }
             $fields['control'] = 'control';
@@ -135,12 +135,12 @@ WHERE TABLE_NAME = '{$reference}'";
 
             $return = '';
             $reference = getTablePrefix() . $reference;
-            $r_data = mysql_query("SELECT * FROM {$reference}");
+            $r_data = mysqli_query($mysqli, "SELECT * FROM {$reference}");
 
 
-            if (@mysql_num_rows($r_data) > 0)
+            if (@mysqli_num_rows($r_data) > 0)
             {
-                while ($ref_record = mysql_fetch_assoc($r_data))
+                while ($ref_record = mysqli_fetch_assoc($r_data))
                 {
                     $ref_record['control'] = <<<xxx
 <button class="action-edit button-edit" name="{$ref_record['id']}">Edit</button>
@@ -178,9 +178,9 @@ ADV_TABLE_TR;
         {
             $reference = getTablePrefix() . $reference;
             $query = "SELECT * FROM $reference";
-            $res = mysql_query($query) or die("mysql_query_error: ".$query);
+            $res = mysqli_query($mysqli, $query) or die("mysql_query_error: ".$query);
 
-            $ref_numrows = @mysql_num_rows($res) ;
+            $ref_numrows = @mysqli_num_rows($res) ;
             $return = <<<TABLE_START
 <table border="1" width="100%">
     <tr>
@@ -192,7 +192,7 @@ ADV_TABLE_TR;
     </tr>
 TABLE_START;
             if ($ref_numrows > 0) {
-                while ($ref_record = mysql_fetch_assoc($res))
+                while ($ref_record = mysqli_fetch_assoc($res))
                 {
                     $return.= <<<TABLE_EACHROW
 <tr>
@@ -524,4 +524,3 @@ TABLE_IS_EMPTY;
 } else {
     Die('При вызове не указан идентификатор справочника! Работать не с чем! ');
 }
-?>

@@ -1,25 +1,18 @@
 <?php
-require_once('../core/core.php');
-require_once('../core/core.db.php');
+require_once '../core/__required.php';
 
-$table = $CONFIG['main_data_table'];
-$table_prefix = $CONFIG['tableprefix'];
-$table = (strpos( $table , $table_prefix) == false ) ? $table_prefix.$table : $table;
-
-
-$link = ConnectDB();
 $data = array();
 
-$title = isset($_GET['title']) ? $_GET['title'] : '';
+$title = $_GET['title'] ?? '';
 
-$query = "SELECT DISTINCT cost_float, dbtitle, mytitle, comment FROM {$table}
+$query = "SELECT DISTINCT cost_float, dbtitle, mytitle, comment FROM {$main_data_table}
 WHERE mytitle LIKE '%".$title."%' AND dbtitle != '' ";
 
 if ($title != '') {
-    $rq = mysql_query($query) or die("Ошибка в запросе: ".$query);
-    $nr = @mysql_num_rows($rq);
+    $rq = mysqli_query($mysqli, $query) or die("Ошибка в запросе: ".$query);
+    $nr = @mysqli_num_rows($rq);
     if ($nr > 0) {
-        while ($r = mysql_fetch_assoc($rq)) {
+        while ($r = mysqli_fetch_assoc($rq)) {
             $rows [] = $r;
         }
     }

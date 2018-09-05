@@ -1,8 +1,5 @@
 <?php
-require_once('core.php');
-require_once('core.db.php');
-require_once('core.kwt.php');
-require_once('core.login.php');
+require_once '__required.php';
 
 $SID = session_id();
 if(empty($SID)) session_start();
@@ -22,25 +19,26 @@ comment varchar 64
 
 */
 
+// $mysqli;
+
 
 $reference = 'rooms';
 $return = '';
 
 if (true) {
     $action = isset($_GET['action']) ? $_GET['action'] : 'no-action';
-    $link = ConnectDB();
 
     switch ($action) {
         case 'insert':
         {
             $q = array(
-                'room_name' => trim(mysql_real_escape_string($_GET['room_name'])),
-                'room_group' => trim(mysql_real_escape_string($_GET['room_group'])),
-                'room_comment' => mysql_real_escape_string($_GET['room_comment']),
+                'room_name' => trim(mysqli_real_escape_string($mysqli, $_GET['room_name'])),
+                'room_group' => trim(mysqli_real_escape_string($mysqli, $_GET['room_group'])),
+                'room_comment' => mysqli_real_escape_string($mysqli, $_GET['room_comment']),
             );
             $qstr = MakeInsert($q, $reference);
-            $res = mysql_query($qstr, $link) or Die("Unable to insert data to DB!".$qstr);
-            $new_id = mysql_insert_id() or Die("Unable to get last insert id! Last request is [$qstr]");
+            $res = mysqli_query($mysqli, $qstr) or Die("Unable to insert data to DB!".$qstr);
+            $new_id = mysqli_insert_id($mysqli) or Die("Unable to get last insert id! Last request is [$qstr]");
 
             $result['message'] = $qstr;
             $result['error'] = 0;
@@ -51,13 +49,13 @@ if (true) {
         {
             $id = $_GET['id'];
             $q = array(
-                'room_name' => trim(mysql_real_escape_string($_GET['room_name'])),
-                'room_group' => trim(mysql_real_escape_string($_GET['room_group'])),
-                'room_comment' => mysql_real_escape_string($_GET['room_comment']),
+                'room_name' => trim(mysqli_real_escape_string($mysqli, $_GET['room_name'])),
+                'room_group' => trim(mysqli_real_escape_string($mysqli, $_GET['room_group'])),
+                'room_comment' => mysqli_real_escape_string($mysqli, $_GET['room_comment']),
             );
 
             $qstr = MakeUpdate($q, $reference, "WHERE id=$id");
-            $res = mysql_query($qstr, $link) or Die("Unable update data : ".$qstr);
+            $res = mysqli_query($mysqli, $qstr) or Die("Unable update data : ".$qstr);
 
             $result['message'] = $qstr;
             $result['error'] = 0;
@@ -69,7 +67,7 @@ if (true) {
             $id = $_GET['id'];
             $reference = getTablePrefix() . $reference;
             $q = "DELETE FROM {$reference} WHERE (id={$id})";
-            if ($r = mysql_query($q)) {
+            if ($r = mysqli_query($mysqli, $q)) {
                 // запрос удаление успешен
                 $result["error"] = 0;
                 $result['message'] = 'Удаление успешно';
@@ -87,11 +85,11 @@ if (true) {
             $id = $_GET['id'];
             $reference = getTablePrefix() . $reference;
             $query = "SELECT * FROM {$reference} WHERE id={$id}";
-            $res = mysql_query($query) or die("Невозможно получить содержимое справочника! ".$query);
-            $ref_numrows = mysql_num_rows($res);
+            $res = mysqli_query($mysqli, $query) or die("Невозможно получить содержимое справочника! ".$query);
+            $ref_numrows = mysqli_num_rows($res);
 
             if ($ref_numrows != 0) {
-                $result['data'] = mysql_fetch_assoc($res);
+                $result['data'] = mysqli_fetch_assoc($res);
                 $result['error'] = 0;
                 $result['message'] = '';
             } else {
@@ -105,9 +103,9 @@ if (true) {
         {
             $reference = getTablePrefix() . $reference;
             $query = "SELECT * FROM {$reference} ORDER BY room_group, room_name";
-            $res = mysql_query($query) or die("mysql_query_error: ".$query);
+            $res = mysqli_query($mysqli, $query) or die("mysql_query_error: ".$query);
 
-            $ref_numrows = @mysql_num_rows($res) ;
+            $ref_numrows = @mysqli_num_rows($res) ;
             $return = <<<TABLE_START
 <table border="1" width="100%">
     <tr>
@@ -119,7 +117,7 @@ if (true) {
     </tr>
 TABLE_START;
             if ($ref_numrows > 0) {
-                while ($ref_record = mysql_fetch_assoc($res))
+                while ($ref_record = mysqli_fetch_assoc($res))
                 {
                     $return.= <<<TABLE_EACHROW
 <tr>
@@ -409,10 +407,9 @@ TABLE_IS_EMPTY;
             break;
         }
     } //switch
-    CloseDB($link);
+    CloseDB($mysqli);
 
     print($return);
 } else {
     Die('При вызове не указан идентификатор справочника! Работать не с чем! ');
 }
-?>

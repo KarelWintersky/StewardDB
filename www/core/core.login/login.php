@@ -1,16 +1,10 @@
 <?php
-require_once('../core.php');
-require_once('../core.db.php');
-require_once('../core.kwt.php');
-require_once('../core.login.php');
-
-$link = ConnectDB();
+require_once '../__required.php'; // mysqli;
 
 $SID = session_id();
 if(empty($SID)) session_start();
 
-if ($il = isLogged()) {
-    // print_r( $il ); die();
+if (isLogged()) {
     Redirect('/index.php');
 } else {
     // скрипт или обработка входа
@@ -49,4 +43,3 @@ if ($il = isLogged()) {
         }
     }
 }
-?>

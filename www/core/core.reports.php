@@ -39,5 +39,3 @@ function array2csv(array &$array)
 
 
 
-
-?>

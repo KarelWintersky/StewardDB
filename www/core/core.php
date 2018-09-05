@@ -66,13 +66,10 @@ function retVal($value, $default=0)
 /*
 строит универсальный запрос на основе GET'а (в лист)
 */
-function getQuery($get, $a_table='')
+function getQuery($get, $table='')
 {
-    global $CONFIG;
+    global $mysqli;
     $t_prefix = getTablePrefix();
-    $table = (strpos( $a_table , $t_prefix) == false ) ? $t_prefix.$a_table : $a_table;
-
-    // $table = ($a_table == '') ? $CONFIG['main_data_table'] : $a_table;
 
     $select = "
     SELECT
@@ -111,10 +108,11 @@ AND rooms.id = {$table}.room "; */
     $where = " WHERE ";
 
     // get by 'is deleted' for deleted list request
-    $where .= (retVal($get['is_deleted']) != '0' ) ? " {$table}.is_deleted = 1 " : " {$table}.is_deleted = 0 ";
+    $where .= (array_key_exists('is_deleted', $get) && $get['is_deleted'] != '0')
+        ? " {$table}.is_deleted = 1 " : " {$table}.is_deleted = 0 ";
 
-    $family = retVal($get['family']);
-    $subfamily = retVal($get['subfamily']);
+    $family = $get['family'] ?? 0;
+    $subfamily = $get['subfamily'] ?? 0;
 
     if ($family != 0) {
         $select .= " , {$t_prefix}ref_family.data_str AS r_family ";
@@ -130,11 +128,18 @@ AND rooms.id = {$table}.room "; */
         }
     }
 
-    $where .= (retVal($get['room']) != '0' ) ? " AND {$table}.room = {$get['room']} " : " ";
-    $where .= (retVal($get['status']) != '0' ) ? " AND {$table}.status = {$get['status']} " : " ";
-    $where .= (retVal($get['owner']) != '0' ) ? " AND {$table}.owner = {$get['owner']} " :  "";
+    $where .= (array_key_exists('room', $get) && $get['room'] != '0')
+        ? " AND {$table}.room = {$get['room']} " : " ";
+
+    $where .= (array_key_exists('status', $get) && $get['status'] != '0')
+        ? " AND {$table}.status = {$get['status']} " : " ";
+
+    $where .= (array_key_exists('owner', $get) && $get['owner'] != '0')
+        ? " AND {$table}.owner = {$get['owner']} " :  "";
+
     // get by id for unique request
-    $where .= (retVal($get['id']) != '0' ) ? " AND {$table}.id = {$get['id']} " : " ";
+    $where .= (array_key_exists('id', $get) && $get['id'] != 0)
+        ? " AND {$table}.id = {$get['id']} " : " ";
 
     $go = "
     ORDER BY room, dbtitle, {$table}.id ";
@@ -144,22 +149,24 @@ AND rooms.id = {$table}.room "; */
 
 function AR_getDataById($ref, $id)
 {
+    global $mysqli;
     $t_prefix = getTablePrefix();
     $q = "SELECT data_str FROM {$t_prefix}{$ref} WHERE id = {$id}";
-    $r = mysql_query($q);
-    if (@mysql_num_rows($r) > 0) {
-        $ret = mysql_fetch_assoc($r);
+    $r = mysqli_query($mysqli, $q);
+    if (@mysqli_num_rows($r) > 0) {
+        $ret = mysqli_fetch_assoc($r);
     }
     return $ret['data_str'];
 }
 
 function R_getDataById($id)
 {
+    global $mysqli;
     $t_prefix = getTablePrefix();
     $q = "SELECT room_name FROM {$t_prefix}rooms WHERE id = {$id}";
-    $r = mysql_query($q);
-    if (@mysql_num_rows($r) > 0) {
-        $ret = mysql_fetch_assoc($r);
+    $r = mysqli_query($mysqli, $q);
+    if (@mysqli_num_rows($r) > 0) {
+        $ret = mysqli_fetch_assoc($r);
     }
     return $ret['room_name'];
 }
@@ -188,6 +195,3 @@ function isAjaxCall($debugmode=false)
     return ((!empty($_SERVER['HTTP_X_REQUESTED_WITH'])) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')) || ($debug);
 }
 
-
-
-?>

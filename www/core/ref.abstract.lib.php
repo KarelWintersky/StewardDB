@@ -1,16 +1,13 @@
 <?php
-require_once('core.php');
-require_once('core.db.php');
+require_once '__required.php';
 
 function AR_getDataById($ref, $id)
 {
+    global $mysqli;
     $q = "SELECT data_str FROM {$ref} WHERE id = {$id}";
-    $r = mysql_query($q);
-    if (@mysql_num_rows($r) > 0) {
-        $ret = mysql_fetch_assoc($r);
+    $r = mysqli_query($mysqli, $q);
+    if (@mysqli_num_rows($r) > 0) {
+        $ret = mysqli_fetch_assoc($r);
     }
     return $ret['data_str'];
 }
-
-
-?>
