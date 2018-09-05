@@ -12,7 +12,7 @@ $DB_CONNECTION = 'blacktower_kwdb';
 
 $BASEPATHS = [
     'blacktower_kwdb'   =>  '',
-    'sweb'              =>  '/stewarddb'
+    'sweb_kwdb'         =>  '/stewarddb'
 ];
 
 $VERSION = [
