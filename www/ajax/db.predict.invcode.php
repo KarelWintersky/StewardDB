@@ -4,15 +4,28 @@ require_once '../core/__required.php';
 $data = array();
 
 $ic = mysqli_escape_string($mysqli, $_GET['code']);
+$prefix = getTablePrefix();
 
-$query = "SELECT DISTINCT {$main_data_table}.id, inv_code, cost_float, dbtitle, rooms.room_name, ref_status.data_str AS current_status
-FROM {$main_data_table}, rooms, ref_status
-WHERE inv_code LIKE '%{$ic}%'
+$query = "
+SELECT DISTINCT 
+    {$main_data_table}.id, 
+    inv_code, 
+    cost_float, 
+    dbtitle, 
+    {$prefix}rooms.room_name, 
+    {$prefix}ref_status.data_str AS current_status
+FROM 
+    {$main_data_table}, 
+    {$prefix}rooms, 
+    {$prefix}ref_status
+WHERE 
+    inv_code LIKE '%{$ic}%'
 AND
-rooms.id = room
+    {$prefix}rooms.id = room
 AND
-ref_status.id = status
-ORDER BY inv_code, room_name, dbtitle";
+    {$prefix}ref_status.id = status
+ORDER BY 
+    inv_code, room_name, dbtitle";
 
 $rq = mysqli_query($mysqli, $query) or die("Ошибка в запросе: ".$query);
 $nr = @mysqli_num_rows($rq);
