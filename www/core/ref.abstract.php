@@ -1,8 +1,5 @@
 <?php
-require_once('core.php');
-require_once('core.db.php');
-require_once('core.kwt.php');
-require_once('core.login.php');
+require_once '__required.php';
 
 $SID = session_id();
 if(empty($SID)) session_start();
@@ -22,19 +19,17 @@ data_comment varchar 64
 
 */
 
-$reference = isset($_GET['ref']) ? $_GET['ref'] : ''; // вообще то если ref не задано - работать не с чем
+$reference = $_GET['ref'] ?? ''; // вообще то если ref не задано - работать не с чем
 $return = '';
 
 if (isset($_GET['ref'])) {
-    $action = isset($_GET['action']) ? $_GET['action'] : 'no-action';
-    $link = ConnectDB();
+    $action = $_GET['action'] ?? 'no-action';
 
     switch ($action) {
         case 'get-comments': // get comments
         {
             $result = array();
-            $q = "SELECT column_name, column_comment FROM information_schema.COLUMNS
-WHERE TABLE_NAME = '{$reference}'";
+            $q = "SELECT column_name, column_comment FROM information_schema.COLUMNS WHERE TABLE_NAME = '{$reference}'";
             $r = mysqli_query($mysqli, $q);
             $rn = @mysqli_num_rows($r);
             if ($rn > 0) {
@@ -52,12 +47,12 @@ WHERE TABLE_NAME = '{$reference}'";
         {
             $q = array(
                 'data_int' => mysqli_real_escape_string($mysqli, trim($_GET['data_int'])),
-                'data_str' => mysqli_real_escape_string(trim($mysqli, $_GET['data_str'])),
+                'data_str' => mysqli_real_escape_string($mysqli, trim($_GET['data_str'])),
                 'data_comment' => mysqli_real_escape_string($mysqli, trim($_GET['data_comment'])),
             );
             $qstr = MakeInsert($q, $reference);
-            $res = mysql_query($qstr, $link) or Die("Unable to insert data to DB!".$qstr);
-            $new_id = mysql_insert_id() or Die("Unable to get last insert id! Last request is [$qstr]");
+            $res = mysqli_query($mysqli, $qstr) or Die("Unable to insert data to DB!".$qstr);
+            $new_id = mysqli_insert_id($mysqli) or Die("Unable to get last insert id! Last request is [$qstr]");
 
             $result['message'] = $qstr;
             $result['error'] = 0;
@@ -74,7 +69,7 @@ WHERE TABLE_NAME = '{$reference}'";
             );
 
             $qstr = MakeUpdate($q, $reference, "WHERE id=$id");
-            $res = mysql_query($qstr, $link) or Die("Unable update data : ".$qstr);
+            $res = mysqli_query($mysqli, $qstr) or Die("Unable update data : ".$qstr);
 
             $result['message'] = $qstr;
             $result['error'] = 0;
@@ -213,6 +208,7 @@ TABLE_IS_EMPTY;
         } // case 'list'
         case 'no-action': {
             ?>
+        <!DOCTYPE html>
         <html>
         <head>
         <title>Работа с абстрактным справочником [<?php echo $reference ?>]</title>
@@ -463,7 +459,7 @@ TABLE_IS_EMPTY;
             });
 
             $("#actor-exit").on('click',function(event){
-                location.href = '<? echo Config::get('basepath'); ?>/core/';
+                location.href = '<?php echo Config::get('basepath'); ?>/core/';
             });
             //@hint:
             // center all buttons in 'control' TD at output table
@@ -518,7 +514,7 @@ TABLE_IS_EMPTY;
             break;
         }
     } //switch
-    CloseDB($link);
+    CloseDB($mysqli);
 
     print($return);
 } else {

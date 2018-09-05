@@ -10,6 +10,8 @@ $rows = array();
 
 $total_cost = 0; $total_loaded = 0;
 
+$get_total_cost = $_GET['get_total_cost'] ?? 0;
+
 if ($nr > 0) {
     while ($r = mysqli_fetch_assoc($qr)) {
         $r['i_title'] = ($r['i_dt'] != '') ? $r['i_dt'] : $r['i_mt'];

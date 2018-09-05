@@ -10,13 +10,11 @@ $q = array(
     'status'    => mysqli_escape_string($mysqli, $_GET['inv_status']),
     'cost_float' => mysqli_escape_string($mysqli, $_GET['inv_price'] ?? ''), // cost!
     'owner'     => mysqli_escape_string($mysqli, $_GET['inv_owner']),
-    'comment'   => mysqli_escape_string($mysqli, $_GET['inv_comment']),
+    'comment'   => mysqli_escape_string($mysqli, $_GET['inv_comment'] ?? ''),
     'date_income_str' => mysqli_escape_string($mysqli, $_GET['inv_date_income_str']),
 );
 $q['date_income_ts'] = ConvertDateToTimestamp($q['date_income_str']);
 $q['date_income'] = Date('Y-m-d', $q['date_income_ts'] );
-
-$link = ConnectDB();
 
 $qstr = MakeUpdate($q, $main_data_table, "WHERE id = {$id}");
 

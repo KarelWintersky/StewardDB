@@ -1,9 +1,5 @@
 <?php
-require_once('core/core.php');
-require_once('core/core.db.php');
-require_once('core/core.kwt.php');
-require_once('core/core.login.php');
-
+require_once 'core/__required.php';
 
 $SID = session_id();
 if(empty($SID)) session_start();

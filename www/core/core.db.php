@@ -27,10 +27,7 @@ function getTablePrefix()
 
 function MakeInsert($arr, $table, $where="")
 {
-    $table_prefix = getTablePrefix();
-    $real_table = (strpos( $table , $table_prefix) == false ) ? $table_prefix.$table : $table;
-
-    $str = "INSERT INTO {$real_table} ";
+    $str = "INSERT INTO {$table} ";
 
     $keys = "(";
     $vals = "(";
@@ -44,10 +41,7 @@ function MakeInsert($arr, $table, $where="")
 
 function MakeUpdate($arr, $table, $where="")
 {
-    $table_prefix = getTablePrefix();
-    $real_table = (strpos( $table , $table_prefix) == false ) ? $table_prefix.$table : $table;
-
-    $str = "UPDATE {$real_table} SET ";
+    $str = "UPDATE {$table} SET ";
 
     foreach ($arr as $key=>$val)
     {
@@ -61,8 +55,7 @@ function MakeUpdate($arr, $table, $where="")
 function DBIsTableExists($table)
 {
     global $mysqli;
-    $real_table = getTablePrefix() . $table;
-    return (mysqli_query($mysqli, "SELECT 1 FROM {$real_table} WHERE 0")) ? true : false;
+    return (mysqli_query($mysqli, "SELECT 1 FROM {$table} WHERE 0")) ? true : false;
 }
 
 /* backup the db OR just a table */
